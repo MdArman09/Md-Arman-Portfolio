@@ -43,6 +43,7 @@ export async function sendContactMessage(
 
   const apiKey = process.env.RESEND_API_KEY;
 
+  // 1. If RESEND_API_KEY is configured, attempt Resend delivery
   if (apiKey) {
     try {
       const resend = new Resend(apiKey);
@@ -56,21 +57,48 @@ export async function sendContactMessage(
 
       return {
         success: true,
-        message: "Thank you! Your message has been sent directly to Arman.",
+        message: "Thank you! Your message has been sent directly to arman.dev09@gmail.com.",
       };
     } catch (err: unknown) {
-      console.error("Resend delivery failed:", err);
-      return {
-        success: false,
-        message: "Could not send message via email provider. Please email arman.dev09@gmail.com directly.",
-      };
+      console.warn("Resend delivery failed, falling back to direct delivery:", err);
     }
   }
 
-  // Fallback for development without API key configured
-  console.log("Mock contact form submission received:", { name, email, message });
+  // 2. Direct delivery to arman.dev09@gmail.com via FormSubmit API
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/arman.dev09@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+        _subject: `Portfolio Message from ${name} (${email})`,
+        _replyto: email,
+        _template: "table",
+        _captcha: "false",
+      }),
+    });
+
+    if (res.ok) {
+      return {
+        success: true,
+        message: "Thank you! Your message has been sent directly to arman.dev09@gmail.com.",
+      };
+    } else {
+      const errorData = await res.json().catch(() => ({}));
+      console.error("Email delivery provider returned non-200:", errorData);
+    }
+  } catch (deliveryError: unknown) {
+    console.error("Direct email delivery error:", deliveryError);
+  }
+
   return {
-    success: true,
-    message: "Thank you for reaching out! Your message was received successfully.",
+    success: false,
+    message:
+      "Could not deliver email automatically. Please reach out directly to arman.dev09@gmail.com.",
   };
 }

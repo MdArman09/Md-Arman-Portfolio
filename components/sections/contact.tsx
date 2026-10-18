@@ -137,7 +137,7 @@ export function Contact() {
                   <span>Send a Direct Message</span>
                 </h3>
                 <p className="text-xs text-muted-foreground">
-                  Validated securely with Zod and spam honeypot filters.
+                  Delivered directly to arman.dev09@gmail.com with spam protection.
                 </p>
               </div>
 
