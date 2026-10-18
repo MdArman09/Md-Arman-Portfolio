@@ -158,36 +158,28 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
     );
   }
 
-  // Hero variant (large, prominent split/dropdown button)
+  // Hero variant (prominent unified dropdown button)
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
-      <div className="inline-flex rounded-full shadow-xs border border-border/80 bg-card">
-        <a
-          href={siteConfig.links.resumeSde}
-          download="Md_Arman_SDE.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 sm:px-5 py-3 rounded-l-full text-sm font-semibold hover:bg-muted/80 text-foreground transition-all duration-200 cursor-pointer"
-        >
-          <FileDown className="w-4 h-4 text-emerald-500" />
-          <span>Download Resume</span>
-        </a>
-
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-haspopup="menu"
-          aria-expanded={isOpen}
-          aria-label="Toggle resume download options (SDE or SAP ABAP)"
-          className="px-3 py-3 border-l border-border/80 rounded-r-full hover:bg-muted/80 text-foreground transition-colors cursor-pointer"
-        >
-          <ChevronDown
-            className={cn(
-              "w-4 h-4 transition-transform duration-200",
-              isOpen && "rotate-180"
-            )}
-          />
-        </button>
-      </div>
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-label="Download Resume options (Choose SDE or SAP ABAP)"
+        className={cn(
+          "inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-border/80 bg-card hover:bg-muted/80 text-foreground transition-all duration-200 shadow-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-ring",
+          className
+        )}
+      >
+        <FileDown className="w-4 h-4 text-emerald-500" />
+        <span>Download Resume</span>
+        <ChevronDown
+          className={cn(
+            "w-4 h-4 transition-transform duration-200 text-muted-foreground",
+            isOpen && "rotate-180 text-foreground"
+          )}
+        />
+      </button>
 
       {isOpen && (
         <div
