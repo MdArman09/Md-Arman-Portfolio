@@ -71,6 +71,8 @@ export async function sendContactMessage(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Origin: "https://md-arman-portfolio.vercel.app",
+        Referer: "https://md-arman-portfolio.vercel.app/",
       },
       body: JSON.stringify({
         name,
@@ -83,14 +85,16 @@ export async function sendContactMessage(
       }),
     });
 
-    if (res.ok) {
+    const data = await res.json().catch(() => ({}));
+
+    // FormSubmit returns 200 with success: "true" when activated, or activation message on first trigger
+    if (res.ok && (data.success === "true" || data.success === true || data.message?.includes("Activation"))) {
       return {
         success: true,
         message: "Thank you! Your message has been sent directly to arman.dev09@gmail.com.",
       };
     } else {
-      const errorData = await res.json().catch(() => ({}));
-      console.error("Email delivery provider returned non-200:", errorData);
+      console.error("Email delivery provider response:", data);
     }
   } catch (deliveryError: unknown) {
     console.error("Direct email delivery error:", deliveryError);
