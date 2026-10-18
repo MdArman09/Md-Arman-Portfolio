@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { timelineItems } from "@/data/experience";
 import { SpotlightCard } from "@/components/21st/spotlight-card";
 import { SlideInCard } from "@/components/motion/SlideInCard";
@@ -18,6 +18,24 @@ import {
 export function TimelineSection() {
   const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = React.useState(false);
+  const railRef = React.useRef<HTMLDivElement>(null);
+
+  // useInView on the parent rail wrapper which always has real layout height
+  const isRailInView = useInView(railRef, {
+    once: true,
+    amount: 0.1,
+    margin: "0px",
+  });
+
+  const [fallbackTriggered, setFallbackTriggered] = React.useState(false);
+
+  // Safety fallback: if in-view has not fired within 1.5s of mount, force visible so bar never stays hidden
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setFallbackTriggered(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   React.useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -25,6 +43,8 @@ export function TimelineSection() {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  const isTimelineVisible = prefersReducedMotion || isRailInView || fallbackTriggered;
 
   return (
     <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50 overflow-x-clip">
@@ -43,15 +63,22 @@ export function TimelineSection() {
           </p>
         </div>
 
-        {/* Vertical Connected Rail Timeline */}
-        <div className="relative pl-6 sm:pl-8 space-y-10 ml-2 sm:ml-4">
-          {/* Top-to-bottom drawing line */}
+        {/* Vertical Connected Rail Timeline: positive offset within section padding, cards indented */}
+        <div ref={railRef} className="relative pl-[44px] sm:pl-12 space-y-10">
+          {/* Top-to-bottom drawing line: clip-path reveal avoids zero-height bounding-box issues */}
           <motion.div
-            initial={prefersReducedMotion ? { scaleY: 1 } : { scaleY: 0 }}
-            whileInView={{ scaleY: 1 }}
-            viewport={{ once: true, amount: 0.1, margin: "-60px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 top-2 bottom-3 w-0.5 bg-border/70 origin-top pointer-events-none"
+            initial={false}
+            animate={
+              isTimelineVisible
+                ? { clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }
+                : { clipPath: "inset(0% 0% 100% 0%)", opacity: 0.001 }
+            }
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+            }
+            className="absolute left-[16px] sm:left-[20px] top-3 bottom-4 w-[2px] -translate-x-1/2 bg-gradient-to-b from-primary via-border to-border/70 dark:from-primary/90 dark:via-border/80 dark:to-border/40 pointer-events-none z-0"
             aria-hidden="true"
           />
 
@@ -64,17 +91,24 @@ export function TimelineSection() {
 
             return (
               <div key={item.id} className="relative group">
-                {/* Node indicator: pops in just before card slides in */}
+                {/* Node indicator: centered exactly on line anchor, pops in just before card */}
                 <motion.div
-                  initial={prefersReducedMotion ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.2, margin: "-80px" }}
-                  transition={{
-                    duration: 0.3,
-                    delay: prefersReducedMotion ? 0 : nodeDelay,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full border-2 border-background bg-card flex items-center justify-center text-primary shadow-xs group-hover:scale-110 group-hover:border-primary transition-all z-10"
+                  initial={false}
+                  animate={
+                    isTimelineVisible
+                      ? { scale: 1, opacity: 1 }
+                      : { scale: 0.6, opacity: 0.001 }
+                  }
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : {
+                          duration: 0.3,
+                          delay: nodeDelay,
+                          ease: [0.22, 1, 0.36, 1],
+                        }
+                  }
+                  className="absolute left-[16px] sm:left-[20px] -translate-x-1/2 top-1.5 w-6 h-6 rounded-full border-2 border-background bg-card flex items-center justify-center text-primary shadow-xs group-hover:scale-110 group-hover:border-primary transition-all z-10"
                 >
                   {isEducation ? (
                     <GraduationCap className="w-3 h-3 text-primary" />
