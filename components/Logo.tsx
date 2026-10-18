@@ -16,7 +16,7 @@ export interface LogoProps {
   /** Optional additional classes on the outer wrapper. */
   className?: string;
   /** Optional click handler. */
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLElement>) => void;
 }
 
 export function Logo({
@@ -166,6 +166,7 @@ export function Logo({
   return (
     <Link
       href="/"
+      onClick={onClick}
       className="inline-flex items-center rounded-full focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background transition-shadow"
       aria-label="Arman.dev, home"
     >

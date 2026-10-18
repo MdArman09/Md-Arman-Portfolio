@@ -337,6 +337,9 @@ export function CommandPalette() {
       if (window.location.pathname === "/") {
         const el = document.getElementById(sectionId);
         if (el) {
+          window.dispatchEvent(
+            new CustomEvent("nav-section-click", { detail: sectionId })
+          );
           const fixedNav = document.querySelector<HTMLElement>("header");
           const navOffset = fixedNav
             ? fixedNav.getBoundingClientRect().height + 28
