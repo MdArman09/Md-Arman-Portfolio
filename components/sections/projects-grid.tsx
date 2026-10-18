@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useReducedMotion } from "framer-motion";
 import { projects } from "@/data/projects";
 import { SpotlightCard } from "@/components/21st/spotlight-card";
 import { GithubIcon } from "@/components/shared/icons";
@@ -14,19 +15,107 @@ import {
 
 export function ProjectsGrid() {
   const [selectedCategory, setSelectedCategory] = React.useState<string>("All");
+  const prefersReducedMotion = useReducedMotion();
 
   const categories = ["All", "AI & Full-Stack", "Enterprise Java", "Web Systems"];
+
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const tabRefs = React.useRef<{ [key: string]: HTMLButtonElement | null }>({});
+
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [canScrollRight, setCanScrollRight] = React.useState(false);
+
+  const updateScrollMask = React.useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 2);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 2);
+  }, []);
+
+  React.useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    updateScrollMask();
+
+    el.addEventListener("scroll", updateScrollMask, { passive: true });
+    window.addEventListener("resize", updateScrollMask);
+
+    return () => {
+      el.removeEventListener("scroll", updateScrollMask);
+      window.removeEventListener("resize", updateScrollMask);
+    };
+  }, [updateScrollMask]);
+
+  React.useEffect(() => {
+    const activeTabEl = tabRefs.current[selectedCategory];
+    if (activeTabEl && scrollContainerRef.current) {
+      activeTabEl.scrollIntoView({
+        inline: "center",
+        block: "nearest",
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    }
+    const timer = setTimeout(updateScrollMask, 350);
+    return () => clearTimeout(timer);
+  }, [selectedCategory, prefersReducedMotion, updateScrollMask]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = categories.indexOf(selectedCategory);
+    if (currentIndex === -1) return;
+
+    let nextIndex = -1;
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      nextIndex = (currentIndex + 1) % categories.length;
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      nextIndex = (currentIndex - 1 + categories.length) % categories.length;
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      nextIndex = 0;
+    } else if (e.key === "End") {
+      e.preventDefault();
+      nextIndex = categories.length - 1;
+    }
+
+    if (nextIndex !== -1) {
+      const nextCat = categories[nextIndex];
+      setSelectedCategory(nextCat);
+      tabRefs.current[nextCat]?.focus();
+    }
+  };
 
   const filteredProjects =
     selectedCategory === "All"
       ? projects
       : projects.filter((p) => p.category === selectedCategory);
 
+  const getMaskStyle = (): React.CSSProperties => {
+    if (!canScrollLeft && !canScrollRight) {
+      return {};
+    }
+    let gradient = "";
+    if (canScrollLeft && canScrollRight) {
+      gradient =
+        "linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)";
+    } else if (canScrollRight) {
+      gradient = "linear-gradient(to right, black, black calc(100% - 24px), transparent)";
+    } else if (canScrollLeft) {
+      gradient = "linear-gradient(to right, transparent, black 24px, black 100%)";
+    }
+
+    return {
+      maskImage: gradient,
+      WebkitMaskImage: gradient,
+    };
+  };
+
   return (
     <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50">
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-primary bg-primary/10 border border-primary/20">
               <Code2 className="w-3.5 h-3.5" />
@@ -40,26 +129,56 @@ export function ProjectsGrid() {
             </p>
           </div>
 
-          {/* Filter Pills */}
-          <div className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-muted/40 border border-border/70 self-start sm:self-auto">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer ${
-                  selectedCategory === cat
-                    ? "bg-primary text-primary-foreground shadow-xs font-semibold"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+          {/* Filter Pills Bar: horizontally scrollable edge-to-edge on mobile, single row on desktop */}
+          <div className="relative w-full md:w-auto self-start md:self-auto min-w-0">
+            {/* Scroll Affordance Mask Wrapper */}
+            <div
+              style={getMaskStyle()}
+              className="transition-[mask-image] duration-200 -mx-4 px-4 md:mx-0 md:px-0"
+            >
+              <div
+                ref={scrollContainerRef}
+                role="tablist"
+                aria-label="Filter projects by category"
+                onKeyDown={handleKeyDown}
+                className="flex flex-nowrap items-center gap-2 overflow-x-auto [scroll-snap-type:x_proximity] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [-webkit-overflow-scrolling:touch] overscroll-x-contain py-1.5 px-0.5"
               >
-                {cat}
-              </button>
-            ))}
+                {categories.map((cat) => {
+                  const isSelected = selectedCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      ref={(el) => {
+                        tabRefs.current[cat] = el;
+                      }}
+                      role="tab"
+                      id={`tab-${cat.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                      aria-controls="projects-grid-list"
+                      aria-selected={isSelected}
+                      tabIndex={isSelected ? 0 : -1}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`min-h-[40px] px-4 py-2 inline-flex items-center justify-center rounded-full text-xs sm:text-sm font-medium shrink-0 whitespace-nowrap [scroll-snap-align:start] transition-all duration-200 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground border border-primary shadow-xs font-semibold"
+                          : "bg-muted/40 hover:bg-muted/70 text-muted-foreground hover:text-foreground border border-border/70 hover:border-border"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          id="projects-grid-list"
+          role="tabpanel"
+          aria-label={`${selectedCategory} projects`}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {filteredProjects.map((project) => {
             const isFlagship = project.id === "ai-mock-interview-coach";
 
