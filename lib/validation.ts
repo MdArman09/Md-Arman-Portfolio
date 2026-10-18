@@ -1,0 +1,11 @@
+import { z } from "zod";
+
+export const contactSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters long"),
+  email: z.string().email("Please provide a valid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters long"),
+  // Honeypot field for bot protection: must be empty
+  website_hp: z.string().max(0, "Bot detected").optional().or(z.literal("")),
+});
+
+export type ContactFormData = z.infer<typeof contactSchema>;
