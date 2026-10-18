@@ -32,7 +32,7 @@ const metaDescription = `${siteConfig.name} — Full-Stack Java Developer and SA
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} | ${siteConfig.title} | ${siteConfig.secondaryTitle}`,
+    default: siteConfig.name,
     template: `${siteConfig.name} | %s`,
   },
   description: metaDescription,

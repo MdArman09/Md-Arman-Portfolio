@@ -7,7 +7,7 @@ export interface SectionConfig {
 export const SECTIONS: Record<string, SectionConfig> = {
   hero: {
     id: "hero",
-    title: "Md Arman Alam | Software Development Engineer",
+    title: "Md Arman Alam",
     hash: "",
   },
   about: {
