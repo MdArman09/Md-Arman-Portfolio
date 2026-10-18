@@ -58,10 +58,12 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
    * *Context*: Centurion University
    * *Stack*: Java, Spring Boot, Spring Data JPA, Hibernate, MySQL, Angular, Firebase Auth, Postman, Maven.
    * *Dynamic Route*: [`/projects/sports-event-management-system`](file:///app/projects/[slug]/page.tsx)
+   * *GitHub*: [github.com/MdArman09/Sports-Sync](https://github.com/MdArman09/Sports-Sync)
 3. **Centurion Library Management System (CLMS)**
    * *Context*: Centurion University
    * *Stack*: Java, Servlets, JSP, JDBC, MySQL, Apache Tomcat, MVC, HTML5/CSS3, JavaScript.
    * *Dynamic Route*: [`/projects/centurion-library-management-system`](file:///app/projects/[slug]/page.tsx)
+   * *GitHub*: [github.com/MdArman09/Library-Management-System](https://github.com/MdArman09/Library-Management-System)
 
 ---
 
