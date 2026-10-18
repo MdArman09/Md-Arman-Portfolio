@@ -103,7 +103,8 @@ export const projects: Project[] = [
     context: "Centurion University",
     category: "Enterprise Java",
     featured: false,
-    isPrivate: true,
+    githubUrl: "https://github.com/MdArman09/Sports-Sync",
+    isPrivate: false,
     stack: [
       "Java",
       "Spring Boot",
@@ -133,7 +134,8 @@ export const projects: Project[] = [
     context: "Centurion University",
     category: "Web Systems",
     featured: false,
-    isPrivate: true,
+    githubUrl: "https://github.com/MdArman09/Library-Management-System",
+    isPrivate: false,
     stack: [
       "Java",
       "Servlets",

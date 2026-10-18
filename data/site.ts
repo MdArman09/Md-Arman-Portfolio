@@ -3,6 +3,7 @@ export interface SiteConfig {
   title: string;
   secondaryTitle: string;
   headline: string;
+  roles: string[];
   intro: string;
   location: string;
   email: string;
@@ -33,6 +34,11 @@ export const siteConfig: SiteConfig = {
   title: "Software Development Engineer (SDE) | Full-Stack Java Developer",
   secondaryTitle: "SAP ABAP Developer | SAP Certified",
   headline: "Software Development Engineer",
+  roles: [
+    "Software Development Engineer",
+    "MERN Developer",
+    "SAP ABAP Developer",
+  ],
   intro:
     "I build secure, scalable full-stack applications, from robust Spring Boot enterprise APIs to high-performance AI-powered products.",
   location: "Bangalore, Karnataka, India",
