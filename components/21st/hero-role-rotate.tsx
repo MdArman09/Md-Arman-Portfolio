@@ -98,36 +98,59 @@ export function HeroRoleRotate({
         className
       )}
     >
-      {/* Reserved height slot container sized to prevent layout shift */}
-      <div className="relative w-full max-w-2xl h-[3rem] sm:h-[3.5rem] md:h-[4rem] flex items-center justify-center overflow-hidden">
-        {prefersReducedMotion ? (
-          <span
-            className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-tight px-2"
-            style={{ fontSize: "clamp(1.5rem, 4vw, 2.75rem)" }}
-          >
-            {roles[0]}
-          </span>
-        ) : (
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={currentRole}
-              variants={variants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="absolute font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-tight px-2 inline-block"
-              style={{ fontSize: "clamp(1.5rem, 4vw, 2.75rem)" }}
+      {/* Reserved height slot container: dynamic CSS grid auto-sizes to tallest role without layout shift */}
+      <div
+        className="relative w-full max-w-2xl grid grid-cols-1 grid-rows-1 items-center justify-center overflow-hidden"
+        style={{ paddingBlock: "0.16em", marginBlock: "-0.16em" }}
+      >
+        {/* Ghost measuring layer: all roles stacked in cell (1, 1).
+            Dynamically fits the tallest wrapped role with zero layout shift */}
+        <div
+          className="col-start-1 row-start-1 grid grid-cols-1 grid-rows-1 items-center justify-center invisible select-none pointer-events-none"
+          aria-hidden="true"
+        >
+          {roles.map((role) => (
+            <span
+              key={role}
+              className="col-start-1 row-start-1 font-display font-semibold tracking-tight text-center leading-[1.25] pb-[0.14em] px-2 text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+              style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
             >
-              {currentRole}
-            </motion.span>
-          </AnimatePresence>
-        )}
+              {role}
+            </span>
+          ))}
+        </div>
+
+        {/* Active role layer */}
+        <div className="col-start-1 row-start-1 flex items-center justify-center w-full">
+          {prefersReducedMotion ? (
+            <span
+              className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+              style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
+            >
+              {roles[0]}
+            </span>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentRole}
+                variants={variants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 inline-block text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+                style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
+              >
+                {currentRole}
+              </motion.span>
+            </AnimatePresence>
+          )}
+        </div>
       </div>
 
       {/* 2px progress bar that fills over the 2800ms hold duration */}
       {!prefersReducedMotion && (
         <div
-          className="mt-2 w-32 sm:w-44 h-[2px] rounded-full bg-border/50 overflow-hidden relative"
+          className="mt-3 w-32 sm:w-44 h-[2px] rounded-full bg-border/50 overflow-hidden relative"
           aria-hidden="true"
         >
           <motion.div
