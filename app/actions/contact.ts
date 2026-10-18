@@ -87,8 +87,23 @@ export async function sendContactMessage(
 
     const data = await res.json().catch(() => ({}));
 
-    // FormSubmit returns 200 with success: "true" when activated, or activation message on first trigger
-    if (res.ok && (data.success === "true" || data.success === true || data.message?.includes("Activation"))) {
+    const isSuccess =
+      res.ok &&
+      (data.success === "true" ||
+        data.success === true ||
+        data.message?.toLowerCase().includes("activation") ||
+        data.message?.toLowerCase().includes("sent") ||
+        data.message?.toLowerCase().includes("success"));
+
+    if (isSuccess) {
+      if (data.message?.toLowerCase().includes("activation")) {
+        return {
+          success: true,
+          message:
+            "Activation email sent! Please check arman.dev09@gmail.com (including Spam/Updates) and click 'Activate Form' to start receiving messages.",
+        };
+      }
+
       return {
         success: true,
         message: "Thank you! Your message has been sent directly to arman.dev09@gmail.com.",
