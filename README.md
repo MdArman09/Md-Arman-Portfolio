@@ -1,18 +1,46 @@
 # Md Arman Alam — Personal Portfolio & Engineering Showcase
 
-> **Production-ready, accessible, fast, and visually distinctive developer portfolio positioning Md Arman Alam as a Software Development Engineer (SDE) and Full-Stack Java Developer, featuring an AI flagship project.**
+> **Production-ready, accessible, lightning-fast, and visually distinctive developer portfolio positioning Md Arman Alam as a Software Development Engineer (SDE) and Full-Stack Java Developer, featuring an AI flagship project.**
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![TypeScript](https://img.shields.io/badge/TypeScript_5-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue)
+
+---
+
+## 🌟 Key Highlights & Engineering Features
+
+- **Geometric Brand Logo Mark** ([`components/Logo.tsx`](file:///components/Logo.tsx)):
+  - Built from geometric strokes with rounded joins where the crossbar forms a code-bracket chevron `</>` shape (reading as both "A" and "code").
+  - Dynamic role-reactive accent dot cross-fading based on the active hero role (Electric Cobalt for SDE, Emerald/Teal for MERN, Violet for SAP ABAP).
+- **Interactive Dual-Resume Dropdown** ([`components/shared/resume-dropdown.tsx`](file:///components/shared/resume-dropdown.tsx)):
+  - Unified prominent CTA button in Hero and Navbar allowing recruiters to selectively download:
+    1. **Software Engineer Resume** (`Md_Arman_SDE.pdf` — Java, Spring Boot, React, AI, Distributed Systems)
+    2. **SAP ABAP Resume** (`Md Arman - SAP ABAP (Resume).pdf` — SAP Certified, ABAP Cloud, Fiori, Open SQL)
+- **High-Performance Command Palette (`⌘K` / `Ctrl+K`)** ([`components/layout/command-palette.tsx`](file:///components/layout/command-palette.tsx)):
+  - Dual desktop & mobile modal architecture with outside-click dismissal (`onPointerDown`).
+  - Bulletproof scrollbar width compensation (`document.body` + fixed floating navbar) preventing layout shifts.
+  - Non-passive wheel & trackpad scroll containment preventing momentum leakage to the background page.
+  - Single source of truth highlight (`disablePointerSelection` + physical pointer movement delta tracking) preventing stationary mouse cursors from stealing arrow-key highlights.
+  - Automatic `block: "nearest"` element scrolling with DOM `MutationObserver`.
+  - Responsive keyboard hints with keycaps (<kbd>↑</kbd> <kbd>↓</kbd>, <kbd>↵</kbd>, <kbd>Esc</kbd>) and safe mobile `visualViewport` scaling.
+- **Scroll-Triggered Timeline Entrance** ([`components/sections/timeline-section.tsx`](file:///components/sections/timeline-section.tsx) & [`components/motion/SlideInCard.tsx`](file:///components/motion/SlideInCard.tsx)):
+  - One-by-one right-to-left slide-in cards for experience and education with smooth cubic-bezier easing (`0.22, 1, 0.36, 1`) and strict `prefers-reduced-motion` compliance.
+  - Reliable mobile vertical rail line rendering with intersection fallback safety.
+- **Responsive Category Filter Tabs** ([`components/sections/projects-grid.tsx`](file:///components/sections/projects-grid.tsx)):
+  - Single-row horizontally scrollable pill bar on mobile with scroll-snap, gradient fade indicators, and keyboard arrow controls.
+  - Zero-shift initial page mount ensuring page refresh remains at the top (Hero).
+- **AI Flagship Case Study Layout** ([`components/sections/featured-project.tsx`](file:///components/sections/featured-project.tsx)):
+  - Client-side code-computed speech diagnostics card with un-truncated metric pills (`9.2 / 10`, `138 WPM`, `2 detected`) and responsive STAR evaluation grid.
 
 ---
 
 ## 🎨 Aesthetic Direction & Design System
 
 * **Design Concept**: **"Technical Precision / Deep Slate & Electric Cobalt"**
-  * Built to communicate senior-level software engineering rigour, architectural clarity, and full-stack execution rather than a generic developer template or the warm-paper palette of the interview coach project.
+  * Communicates senior-level software engineering rigour, architectural clarity, and full-stack execution rather than a generic developer template.
 * **Palette Tokens** (Light & Dark mode via CSS variables in `app/globals.css`):
   * **Dark Mode** (Primary showcase): Deep slate obsidian `hsl(222, 47%, 7%)` (`#090D16`), Card surfaces `hsl(217, 33%, 12%)` (`#111827`), Subtle luminous borders `hsl(217, 24%, 18%)`.
   * **Light Mode**: Crisp architectural slate `hsl(210, 40%, 98%)` (`#F8FAFC`), Pure card white `hsl(0, 0%, 100%)`, Defined borders `hsl(214, 32%, 88%)`.
@@ -29,20 +57,21 @@
 
 ---
 
-## 🧩 21st.dev Component Integration
+## 🧩 21st.dev & Custom Component Architecture
 
-Modern React components sourced and adapted from **21st.dev**, unified under custom design tokens:
-
-| Component | 21st.dev Source | Purpose |
+| Component | File Path | Purpose |
 | :--- | :--- | :--- |
-| **Grid Background** | `appica-dev/background-pattern` | Interactive canvas with mouse-following radial spotlight glow |
-| **Floating Navbar** | `preetsuthar17/navbar-1` | Floating pill header with glassmorphism blur, active link indicator, and `⌘K` trigger |
-| **Shimmer Button** | `dillionverma/shimmer-button` | Animated perimeter shimmer on the primary CTA ("View Flagship Project") |
-| **Spotlight Card** | `preetsuthar17/spotlight-card` & `ibelick/spotlight` | Interactive cards with mouse-tracking radial border and background glow |
-| **Projects Bento Grid** | `designali-in/bento-grid` | Responsive asymmetric bento grid with category filters and tech tags |
-| **Vertical Timeline** | `cubby-ui/timeline` | Connected rail timeline for internship experience and B.Tech education |
-| **Command Palette** | `properui/command-menu` (`cmdk`) | `⌘K` / `Ctrl+K` keyboard dialog for jumping between sections and case studies |
-| **Footer** | `scrollxui/footer-with-suite` | Typographic brand wordmark with social links and tech credits |
+| **Brand Logo** | [`components/Logo.tsx`](file:///components/Logo.tsx) | Clean geometric "A" with code-bracket chevron and role-synced accent dot |
+| **Dual Resume Dropdown** | [`components/shared/resume-dropdown.tsx`](file:///components/shared/resume-dropdown.tsx) | Accessible dropdown button for selecting SDE vs SAP ABAP resumes |
+| **Grid Background** | [`components/21st/grid-background.tsx`](file:///components/21st/grid-background.tsx) | Interactive canvas with mouse-following radial spotlight glow |
+| **Floating Navbar** | [`components/layout/header.tsx`](file:///components/layout/header.tsx) | Floating pill header with glassmorphism blur, active link indicator, and `⌘K` trigger |
+| **Shimmer Button** | [`components/21st/shimmer-button.tsx`](file:///components/21st/shimmer-button.tsx) | Animated perimeter shimmer on the primary CTA ("View Flagship Project") |
+| **Spotlight Card** | [`components/21st/spotlight-card.tsx`](file:///components/21st/spotlight-card.tsx) | Interactive cards with mouse-tracking radial border and background glow |
+| **Projects Bento Grid** | [`components/sections/projects-grid.tsx`](file:///components/sections/projects-grid.tsx) | Responsive bento grid with category filter bar and tech stack tags |
+| **Vertical Timeline** | [`components/sections/timeline-section.tsx`](file:///components/sections/timeline-section.tsx) | Scroll-triggered entrance timeline for internship experience and B.Tech education |
+| **Slide-In Card** | [`components/motion/SlideInCard.tsx`](file:///components/motion/SlideInCard.tsx) | Staggered entrance animation component with cubic-bezier easing |
+| **Command Palette** | [`components/layout/command-palette.tsx`](file:///components/layout/command-palette.tsx) | `⌘K` / `Ctrl+K` keyboard dialog for jumping between sections and case studies |
+| **Footer** | [`components/layout/footer.tsx`](file:///components/layout/footer.tsx) | Typographic brand wordmark with social links, copyright, and status |
 
 ---
 
@@ -51,8 +80,8 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
 1. **AI Mock Interview Coach (Flagship Project)**
    * *Tagline*: Interactive interview practice platform providing real-time voice and typed evaluations, code-computed pacing and filler-word metrics, and structured STAR feedback powered by Groq.
    * *Stack*: React 19, Vite, Tailwind CSS, Framer Motion, React Router 7, Node.js, Express 4, MongoDB Atlas, Groq SDK (Llama 3.3 70B), JWT, Zod, Helmet, Brevo API, Google OAuth 2.0, Vercel, Render.
-   * *Full Case Study Route*: [`/projects/ai-mock-interview-coach`](file:///app/projects/ai-mock-interview-coach/page.tsx)
-   * *Live*: [ai-mock-interview-coach-rho.vercel.app](https://ai-mock-interview-coach-rho.vercel.app)
+   * *Case Study Route*: [`/projects/ai-mock-interview-coach`](file:///app/projects/ai-mock-interview-coach/page.tsx)
+   * *Live Platform*: [ai-mock-interview-coach-rho.vercel.app](https://ai-mock-interview-coach-rho.vercel.app)
    * *GitHub*: [github.com/MdArman09/AI-Mock-Interview-Coach](https://github.com/MdArman09/AI-Mock-Interview-Coach)
 2. **Sports Event Management System (SEMS)**
    * *Context*: Centurion University
@@ -76,7 +105,7 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
 │   ├── not-found.tsx                  # Custom 404 page
 │   ├── sitemap.ts                     # Dynamic search engine sitemap
 │   ├── robots.ts                      # Web crawler directives
-│   ├── globals.css                    # Design tokens (light/dark CSS vars), utility layers
+│   ├── globals.css                    # Design tokens (light/dark CSS vars), slim scrollbars, utilities
 │   ├── actions/
 │   │   └── contact.ts                 # React 19 Server Action with Zod & Resend integration
 │   └── projects/
@@ -85,20 +114,27 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
 │       └── [slug]/
 │           └── page.tsx               # Dynamic case study page for SEMS and CLMS
 ├── components/
+│   ├── Logo.tsx                       # Custom geometric SVG logo with role-synced dot
 │   ├── 21st/                          # Sourced 21st.dev components adapted to design tokens
 │   │   ├── grid-background.tsx
+│   │   ├── hero-background.tsx
+│   │   ├── hero-role-rotate.tsx
 │   │   ├── shimmer-button.tsx
 │   │   └── spotlight-card.tsx
 │   ├── layout/                        # Header, Footer, ThemeToggle, CommandPalette
+│   ├── motion/                        # SlideInCard entrance motion wrapper
 │   ├── sections/                      # Hero, About, Featured, Projects, Skills, Timeline, Certs, Contact
 │   ├── diagrams/                      # System Architecture & Two-Stage Resume Pipeline SVGs
-│   └── shared/                        # CopyButton, ScrollProgress, BackToTop, Icons
+│   └── shared/                        # ResumeDropdown, CopyButton, ScrollProgress, BackToTop, Icons
 ├── data/                              # Typed single sources of truth
 │   ├── site.ts                        # Identity, links, bio, quick facts
 │   ├── projects.ts                    # All project data and case study content
 │   ├── skills.ts                      # Technical skills grouped into 6 categories
 │   ├── experience.ts                  # Experience & Education timeline entries
 │   └── certifications.ts              # SAP certifications & IEEE award
+├── public/                            # Static assets and downloadable resume PDFs
+│   ├── Md_Arman_SDE.pdf               # Software Development Engineer Resume
+│   └── Md Arman - SAP ABAP (Resume).pdf # SAP Certified ABAP Resume
 └── lib/
     ├── utils.ts                       # clsx + twMerge utility
     └── validation.ts                  # Zod validation schema for contact submissions
@@ -109,7 +145,7 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
 ## 💻 Local Development Setup
 
 ### 1. Prerequisites
-* Node.js $\ge 18.18$ (Tested on Node.js v24)
+* Node.js $\ge 18.18$ (Tested on Node.js v20 / v22 / v24)
 * npm $\ge 9$
 
 ### 2. Installation
@@ -138,10 +174,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 5. Production Build & Linting
 ```bash
-# Run ESLint check
+# Run ESLint validation
 npm run lint
 
-# Build production bundle with full typecheck and static prerendering
+# Build production bundle with full typecheck and static prerendering (Turbopack)
 npm run build
 
 # Start the production server locally
@@ -178,8 +214,8 @@ Open `data/projects.ts` and append an object to the `projects` array:
 
 ### 2. Update Resumes
 The website supports dual targeted resumes for recruiters:
-- **SAP ABAP Resume**: Located at `public/Md Arman - SAP ABAP (Resume).pdf` (your authentic uploaded SAP ABAP resume).
-- **Software Engineer Resume**: Located at `public/Md_Arman_SDE.pdf`. When you want to update it, drop your updated PDF into `public/Md_Arman_SDE.pdf` (or place it in `Resume/` and copy it to `public/`). All download buttons across the hero, navbar, and command palette automatically serve your exact file without alterations.
+- **SAP ABAP Resume**: Located at `public/Md Arman - SAP ABAP (Resume).pdf` (authentic SAP ABAP resume).
+- **Software Engineer Resume**: Located at `public/Md_Arman_SDE.pdf`. When you want to update it, drop your updated PDF into `public/Md_Arman_SDE.pdf`. All download buttons across the hero, navbar, and command palette automatically serve your exact file without alterations.
 
 ### 3. Update Technical Skills or Experience
 * Edit `data/skills.ts` to add or modify chips in any of the 6 categories.
