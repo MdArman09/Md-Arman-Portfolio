@@ -121,7 +121,7 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
           <div
             role="menu"
             aria-orientation="vertical"
-            className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl glass-panel border border-border/80 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150"
+            className="absolute right-0 mt-2 w-72 origin-top-right rounded-2xl bg-card text-card-foreground border border-border shadow-2xl shadow-black/20 ring-1 ring-black/5 dark:ring-white/10 p-2 z-50 animate-in fade-in zoom-in-95 duration-150"
           >
             <div className="px-2 py-1.5 text-[11px] font-mono text-muted-foreground uppercase tracking-wider border-b border-border/60 mb-1">
               Select Resume to Download
@@ -137,7 +137,7 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
                   rel="noopener noreferrer"
                   role="menuitem"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-primary/10 transition-colors text-foreground group cursor-pointer"
+                  className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 transition-colors text-foreground group cursor-pointer"
                 >
                   <Icon className="w-4 h-4 text-primary mt-0.5 shrink-0" />
                   <div className="flex-1 text-left">
@@ -193,10 +193,11 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
         <div
           role="menu"
           aria-orientation="vertical"
-          className="absolute left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0 mt-2 w-80 rounded-2xl glass-panel border border-border/80 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150"
+          className="absolute left-1/2 -translate-x-1/2 mt-3 w-80 sm:w-92 max-w-[calc(100vw-2rem)] rounded-2xl bg-card text-card-foreground border border-border shadow-2xl shadow-black/30 dark:shadow-black/60 ring-1 ring-black/5 dark:ring-white/10 p-2.5 z-50 animate-in fade-in zoom-in-95 duration-150"
         >
-          <div className="px-3 py-2 text-[11px] font-mono text-muted-foreground uppercase tracking-wider border-b border-border/60 mb-1">
-            Choose Target Profile Resume
+          <div className="px-3 py-2 text-[11px] font-mono text-muted-foreground uppercase tracking-wider border-b border-border/60 mb-1 flex items-center justify-between">
+            <span>Choose Target Profile Resume</span>
+            <span className="text-[10px] text-muted-foreground">PDF</span>
           </div>
           {resumes.map((r) => {
             const Icon = r.icon;
@@ -209,18 +210,18 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
                 rel="noopener noreferrer"
                 role="menuitem"
                 onClick={() => setIsOpen(false)}
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-primary/10 transition-colors text-foreground group cursor-pointer"
+                className="flex items-start gap-3 p-3 rounded-xl hover:bg-muted/70 transition-colors text-foreground group cursor-pointer border border-transparent hover:border-border/60"
               >
-                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon className="w-4 h-4 text-primary" />
+                <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                  <Icon className="w-4 h-4 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
                 <div className="flex-1 text-left">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
                       {r.shortTitle}
                     </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                      PDF
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0">
+                      Download
                     </span>
                   </div>
                   <span className="text-[11px] text-muted-foreground block mt-0.5">

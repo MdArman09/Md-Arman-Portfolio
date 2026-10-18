@@ -13,7 +13,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8"
+      className="relative z-20 min-h-[92vh] flex items-center justify-center pt-28 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8"
     >
       <GridBackground>
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
@@ -58,7 +58,7 @@ export function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <div className="relative z-30 flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link href="#featured">
               <ShimmerButton className="text-sm px-6 py-3">
                 <Sparkles className="w-4 h-4" />
@@ -79,7 +79,7 @@ export function Hero() {
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center justify-center gap-4 pt-4">
+          <div className="relative z-10 flex items-center justify-center gap-4 pt-4">
             <a
               href={siteConfig.links.github}
               target="_blank"
@@ -110,7 +110,7 @@ export function Hero() {
           </div>
 
           {/* Scroll Down Indicator */}
-          <div className="pt-8">
+          <div className="relative z-10 pt-8">
             <Link
               href="#about"
               aria-label="Scroll to about section"
