@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { ThemeToggle } from "./theme-toggle";
 import { ResumeDropdown } from "@/components/shared/resume-dropdown";
 import { Logo } from "@/components/Logo";
 import { Search, Menu, X, ArrowUpRight } from "lucide-react";
+import { scrollToSection, getNavOffset } from "@/lib/scroll";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -21,11 +21,33 @@ export function Header() {
     }
     return "";
   });
-  const prefersReducedMotion = useReducedMotion();
   const isClickScrollingRef = React.useRef(false);
   const clickTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   React.useEffect(() => {
+    // 1. Dynamic navbar occupied height measurement via ResizeObserver
+    const updateNavOffset = () => {
+      const navEl =
+        document.querySelector<HTMLElement>("header nav") ||
+        document.querySelector<HTMLElement>("header");
+      if (navEl) {
+        const bottom = Math.round(navEl.getBoundingClientRect().bottom);
+        document.documentElement.style.setProperty("--nav-offset", `${bottom}px`);
+      }
+    };
+
+    updateNavOffset();
+
+    const navEl = document.querySelector<HTMLElement>("header nav");
+    let resizeObserver: ResizeObserver | null = null;
+    if (navEl && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        updateNavOffset();
+      });
+      resizeObserver.observe(navEl);
+    }
+
+    // 2. Scroll-spy tracking aligned to data-scroll-target content start
     const handleScroll = () => {
       if (isClickScrollingRef.current) return;
 
@@ -46,21 +68,28 @@ export function Header() {
         return;
       }
 
+      const navOffset = getNavOffset();
       const sections = siteConfig.navItems.map((item) =>
         item.href.replace("/#", "")
       );
-      const targetScrollY = scrollY + 140;
+      const targetThreshold = scrollY + navOffset + 32;
 
       for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && el.offsetTop <= targetScrollY) {
-          setActiveSection(sections[i]);
-          return;
+        const sectionEl = document.getElementById(sections[i]);
+        if (sectionEl) {
+          const targetChild =
+            sectionEl.querySelector<HTMLElement>("[data-scroll-target]") ||
+            sectionEl;
+          const top = targetChild.getBoundingClientRect().top + scrollY;
+          if (top <= targetThreshold) {
+            setActiveSection(sections[i]);
+            return;
+          }
         }
       }
     };
 
-    // Listen to section clicks from nav links, mobile drawer, command palette
+    // 3. Listen to section clicks from nav links, mobile drawer, command palette
     const handleSectionClickEvent = (e: Event) => {
       const customEvent = e as CustomEvent<string>;
       const targetId = customEvent.detail;
@@ -97,10 +126,37 @@ export function Header() {
       handleScroll();
     };
 
+    // 4. Back / Forward navigation synchronization
+    const handlePopState = () => {
+      if (window.location.hash) {
+        scrollToSection(window.location.hash, { updateHistory: false });
+      } else if (window.location.pathname === "/") {
+        scrollToSection("hero", { updateHistory: false });
+      }
+    };
+
+    // 5. Initial load with hash: wait for fonts to settle and re-align
+    if (window.location.hash) {
+      const initialHash = window.location.hash;
+      const alignInitialHash = async () => {
+        try {
+          if (document.fonts?.ready) {
+            await document.fonts.ready;
+          }
+        } catch {}
+        requestAnimationFrame(() => {
+          scrollToSection(initialHash, { instant: true, updateHistory: false });
+        });
+      };
+      alignInitialHash();
+    }
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", updateNavOffset, { passive: true });
     window.addEventListener("resize", handleScroll, { passive: true });
+    window.addEventListener("orientationchange", updateNavOffset, { passive: true });
     window.addEventListener("hashchange", handleHashSync);
-    window.addEventListener("popstate", handleHashSync);
+    window.addEventListener("popstate", handlePopState);
     window.addEventListener("nav-section-click", handleSectionClickEvent);
 
     const rafId = requestAnimationFrame(() => {
@@ -109,13 +165,16 @@ export function Header() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      if (resizeObserver) resizeObserver.disconnect();
       if (clickTimeoutRef.current) {
         clearTimeout(clickTimeoutRef.current);
       }
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", updateNavOffset);
       window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("orientationchange", updateNavOffset);
       window.removeEventListener("hashchange", handleHashSync);
-      window.removeEventListener("popstate", handleHashSync);
+      window.removeEventListener("popstate", handlePopState);
       window.removeEventListener("nav-section-click", handleSectionClickEvent);
     };
   }, []);
@@ -126,17 +185,15 @@ export function Header() {
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    sectionId: string,
-    href: string
+    sectionId: string
   ) => {
-    // If on homepage "/", handle smooth scrolling and immediate active highlight
     if (typeof window !== "undefined" && window.location.pathname === "/") {
       e.preventDefault();
 
-      // 1. Immediately turn this navbar item active blue
+      // Immediately turn clicked item active blue
       setActiveSection(sectionId);
 
-      // 2. Lock scroll listener so intermediate sections don't steal the active state
+      // Lock scroll-spy listener during smooth scroll
       isClickScrollingRef.current = true;
       if (clickTimeoutRef.current) {
         clearTimeout(clickTimeoutRef.current);
@@ -145,29 +202,14 @@ export function Header() {
         isClickScrollingRef.current = false;
       }, 950);
 
-      // 3. Notify global listeners (DynamicTitle, useActiveSection)
-      window.dispatchEvent(
-        new CustomEvent("nav-section-click", { detail: sectionId })
-      );
-
-      // 4. Update browser URL hash cleanly without jumping
-      try {
-        window.history.pushState(null, "", href);
-      } catch {}
-
-      // 5. Scroll smoothly to target element
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({
-          behavior: prefersReducedMotion ? "auto" : "smooth",
-          block: "start",
-        });
-      }
-
-      // 6. Close mobile menu drawer if open
+      // Close mobile drawer first so body scroll is unblocked
       setMobileMenuOpen(false);
+
+      // Scroll to section content start using shared utility
+      requestAnimationFrame(() => {
+        scrollToSection(sectionId);
+      });
     } else {
-      // If navigating from another route (e.g. /projects/...), let standard Next.js Link navigate to /#section
       setMobileMenuOpen(false);
     }
   };
@@ -181,22 +223,10 @@ export function Header() {
       clickTimeoutRef.current = setTimeout(() => {
         isClickScrollingRef.current = false;
       }, 850);
-
-      window.dispatchEvent(
-        new CustomEvent("nav-section-click", { detail: "hero" })
-      );
-
-      if (window.location.hash) {
-        try {
-          window.history.pushState(null, "", window.location.pathname);
-        } catch {}
-      }
-
-      window.scrollTo({
-        top: 0,
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
       setMobileMenuOpen(false);
+      requestAnimationFrame(() => {
+        scrollToSection("hero");
+      });
     }
   };
 
@@ -227,7 +257,7 @@ export function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, sectionId, item.href)}
+                  onClick={(e) => handleNavClick(e, sectionId)}
                   aria-current={isActive ? "location" : undefined}
                   className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
                     isActive
@@ -309,7 +339,7 @@ export function Header() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, sectionId, item.href)}
+                    onClick={(e) => handleNavClick(e, sectionId)}
                     aria-current={isActive ? "location" : undefined}
                     className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors flex items-center justify-between min-h-[44px] cursor-pointer ${
                       isActive

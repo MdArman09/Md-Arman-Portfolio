@@ -22,6 +22,7 @@ import {
 import { useTheme } from "next-themes";
 import { siteConfig } from "@/data/site";
 import { projects } from "@/data/projects";
+import { scrollToSection } from "@/lib/scroll";
 
 export function CommandPalette() {
   const [open, setOpen] = React.useState(false);
@@ -335,25 +336,8 @@ export function CommandPalette() {
     runCommand(() => {
       const sectionId = hash.replace("/#", "");
       if (window.location.pathname === "/") {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          window.dispatchEvent(
-            new CustomEvent("nav-section-click", { detail: sectionId })
-          );
-          const fixedNav = document.querySelector<HTMLElement>("header");
-          const navOffset = fixedNav
-            ? fixedNav.getBoundingClientRect().height + 28
-            : 80;
-          const elementPosition = el.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.scrollY - navOffset;
-
-          window.scrollTo({
-            top: Math.max(0, offsetPosition),
-            behavior: prefersReducedMotion ? "auto" : "smooth",
-          });
-          window.history.pushState(null, "", hash);
-          return;
-        }
+        scrollToSection(sectionId);
+        return;
       }
       router.push(hash);
     });

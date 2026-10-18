@@ -9,6 +9,7 @@ import { HeroRoleRotate } from "@/components/21st/hero-role-rotate";
 import { ResumeDropdown } from "@/components/shared/resume-dropdown";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
 import { Mail, ArrowDown, Sparkles, MapPin } from "lucide-react";
+import { scrollToSection } from "@/lib/scroll";
 
 export function Hero() {
   const [activeRoleIndex, setActiveRoleIndex] = React.useState(0);
@@ -92,7 +93,13 @@ export function Hero() {
 
           {/* CTAs */}
           <div className="relative z-30 flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link href="#featured">
+            <Link
+              href="#featured"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("featured");
+              }}
+            >
               <ShimmerButton className="text-sm px-6 py-3">
                 <Sparkles className="w-4 h-4" />
                 <span>View Flagship Project</span>
@@ -104,6 +111,10 @@ export function Hero() {
 
             <Link
               href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("contact");
+              }}
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-border/60 hover:border-border text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
               <Mail className="w-4 h-4" />
@@ -146,6 +157,10 @@ export function Hero() {
           <div className="relative z-10 pt-8">
             <Link
               href="#about"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("about");
+              }}
               aria-label="Scroll to about section"
               className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
             >

@@ -135,15 +135,21 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50">
+    <section
+      id="contact"
+      className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50 min-h-[calc(100dvh-var(--nav-offset,88px))]"
+    >
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Section Header */}
-        <div className="space-y-2">
+        <div data-scroll-target className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-primary bg-primary/10 border border-primary/20">
             <Mail className="w-3.5 h-3.5" />
             <span>07 // GET IN TOUCH</span>
           </div>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground">
+          <h2
+            tabIndex={-1}
+            className="font-display font-bold text-3xl sm:text-4xl text-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
+          >
             Let&apos;s Connect & Build Together
           </h2>
           <p className="text-muted-foreground text-sm max-w-xl">

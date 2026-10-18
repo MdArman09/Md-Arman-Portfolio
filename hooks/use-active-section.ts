@@ -60,7 +60,9 @@ export function useActiveSection(sectionIds: string[] = SECTION_IDS): string {
       for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (el) {
-          const top = el.offsetTop;
+          const targetChild =
+            el.querySelector<HTMLElement>("[data-scroll-target]") || el;
+          const top = targetChild.getBoundingClientRect().top + scrollY;
           const height = el.offsetHeight;
           if (middleY >= top && middleY <= top + height) {
             matchedId = id;
@@ -74,7 +76,18 @@ export function useActiveSection(sectionIds: string[] = SECTION_IDS): string {
       return matchedId || DEFAULT_SECTION_ID;
     };
 
-    // IntersectionObserver with rootMargin: "-45% 0px -50% 0px"
+    // Calculate nav offset for IntersectionObserver rootMargin
+    const navOffset =
+      typeof window !== "undefined"
+        ? Math.round(
+            (
+              document.querySelector<HTMLElement>("header nav") ||
+              document.querySelector<HTMLElement>("header")
+            )?.getBoundingClientRect().bottom || (window.innerWidth >= 640 ? 88 : 76)
+          )
+        : 88;
+
+    // IntersectionObserver with top rootMargin aligned to navbar bottom
     const observer = new IntersectionObserver(
       (entries) => {
         if (isClickLockedRef.current) return;
@@ -92,7 +105,7 @@ export function useActiveSection(sectionIds: string[] = SECTION_IDS): string {
         setActiveSection(resolved);
       },
       {
-        rootMargin: "-45% 0px -50% 0px",
+        rootMargin: `-${navOffset + 16}px 0px -50% 0px`,
         threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
       }
     );

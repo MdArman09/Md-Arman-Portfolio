@@ -1,12 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { projects } from "@/data/projects";
 import { Mail, ArrowUpRight, Terminal } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
 import { Logo } from "@/components/Logo";
+import { scrollToSection } from "@/lib/scroll";
 
 export function Footer() {
   const currentYear = 2026;
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    if (typeof window !== "undefined" && window.location.pathname === "/" && href.startsWith("/#")) {
+      e.preventDefault();
+      scrollToSection(href);
+    }
+  };
 
   return (
     <footer className="relative border-t border-border/70 bg-card/40 backdrop-blur-md pt-16 pb-12 overflow-hidden">
@@ -49,7 +62,8 @@ export function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 cursor-pointer"
                   >
                     <span>{item.label}</span>
                   </Link>
