@@ -21,6 +21,7 @@ export function ProjectsGrid() {
 
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const tabRefs = React.useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const isInitialMountRef = React.useRef(true);
 
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(false);
@@ -48,11 +49,22 @@ export function ProjectsGrid() {
   }, [updateScrollMask]);
 
   React.useEffect(() => {
+    // Avoid scrolling or moving the window on initial page mount/refresh
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+      return;
+    }
+
     const activeTabEl = tabRefs.current[selectedCategory];
-    if (activeTabEl && scrollContainerRef.current) {
-      activeTabEl.scrollIntoView({
-        inline: "center",
-        block: "nearest",
+    const container = scrollContainerRef.current;
+    if (activeTabEl && container) {
+      const scrollOffset =
+        activeTabEl.offsetLeft -
+        container.clientWidth / 2 +
+        activeTabEl.clientWidth / 2;
+
+      container.scrollTo({
+        left: Math.max(0, scrollOffset),
         behavior: prefersReducedMotion ? "auto" : "smooth",
       });
     }
