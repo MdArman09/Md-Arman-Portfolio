@@ -4,29 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { ShimmerButton } from "@/components/21st/shimmer-button";
-import { GridBackground } from "@/components/21st/grid-background";
+import { HeroBackground } from "@/components/21st/hero-background";
 import { HeroRoleRotate } from "@/components/21st/hero-role-rotate";
 import { ResumeDropdown } from "@/components/shared/resume-dropdown";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
 import { Mail, ArrowDown, Sparkles, MapPin } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-// Aurora orbs tint presets mapped to each role in order:
-// 0: SDE (Blue/Cyan) | 1: MERN (Teal/Emerald) | 2: SAP ABAP (Indigo/Violet-Blue)
-const roleGradients = [
-  {
-    primaryOrb: "bg-blue-600/15 dark:bg-blue-500/20",
-    secondaryOrb: "bg-cyan-400/15 dark:bg-cyan-400/20",
-  },
-  {
-    primaryOrb: "bg-emerald-500/15 dark:bg-emerald-500/20",
-    secondaryOrb: "bg-teal-400/15 dark:bg-teal-400/20",
-  },
-  {
-    primaryOrb: "bg-indigo-600/15 dark:bg-indigo-500/20",
-    secondaryOrb: "bg-blue-500/15 dark:bg-blue-500/20",
-  },
-];
 
 export function Hero() {
   const [activeRoleIndex, setActiveRoleIndex] = React.useState(0);
@@ -34,26 +16,12 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative z-20 min-h-[92vh] flex items-center justify-center pt-28 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8"
+      className="relative z-20 min-h-[92vh] flex items-center justify-center pt-28 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      <GridBackground>
-        {/* Subtle Aurora / Soft-Orb Gradient (CSS/transform only, cross-fades per role) */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">
-          <div
-            className={cn(
-              "absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] sm:w-[46rem] h-[22rem] rounded-full blur-3xl transition-colors duration-1000 ease-in-out motion-reduce:transition-none opacity-80",
-              roleGradients[activeRoleIndex]?.primaryOrb
-            )}
-          />
-          <div
-            className={cn(
-              "absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[24rem] sm:w-[32rem] h-[18rem] rounded-full blur-3xl transition-colors duration-1000 ease-in-out motion-reduce:transition-none opacity-60",
-              roleGradients[activeRoleIndex]?.secondaryOrb
-            )}
-          />
-        </div>
+      {/* Centered, balanced, layered CSS background (aura, side glows, masked grid, vignette) */}
+      <HeroBackground activeRoleIndex={activeRoleIndex} />
 
-        <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+      <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           {/* Status Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/80 bg-background/80 backdrop-blur-md shadow-xs animate-in fade-in slide-in-from-top-4 duration-500">
             <span className="relative flex h-2 w-2">
@@ -187,7 +155,6 @@ export function Hero() {
             </Link>
           </div>
         </div>
-      </GridBackground>
     </section>
   );
 }

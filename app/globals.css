@@ -120,6 +120,46 @@ body {
   outline-offset: 2px;
 }
 
+/* Slow drift keyframes for hero background orbs (transform only, 14-20s, opposite phase) */
+@keyframes orbDriftLeft {
+  0% {
+    transform: translate(-50%, -50%) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate(-50%, -50%) translate3d(18px, -18px, 0);
+  }
+}
+
+@keyframes orbDriftRight {
+  0% {
+    transform: translate(50%, -50%) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate(50%, -50%) translate3d(-18px, 18px, 0);
+  }
+}
+
+@keyframes orbDriftCenter {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.04) translate3d(0, -8px, 0);
+  }
+}
+
+.animate-orb-left {
+  animation: orbDriftLeft 16s ease-in-out infinite alternate;
+}
+
+.animate-orb-right {
+  animation: orbDriftRight 18s ease-in-out infinite alternate;
+}
+
+.animate-orb-center {
+  animation: orbDriftCenter 20s ease-in-out infinite alternate;
+}
+
 /* Accessibility: respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   html {
