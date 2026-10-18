@@ -96,6 +96,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hero heading & role fluid typography */
+.hero-title {
+  font-size: clamp(1.85rem, 8.8vw, 3rem);
+}
+
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+  }
+}
+
+.hero-role-text {
+  font-size: clamp(1.1rem, 5vw, 1.65rem);
+}
+
+@media (min-width: 640px) {
+  .hero-role-text {
+    font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+  }
+}
+
 /* Glassmorphism utility */
 .glass-panel {
   background-color: hsla(var(--card) / 0.75);

@@ -47,12 +47,11 @@ export function Hero() {
             />
 
             {/* Semantic H1: Name stays largest hero text */}
-            <h1
-              className="font-display font-extrabold tracking-tight text-foreground leading-[1.1]"
-              style={{ fontSize: "clamp(2.5rem, 7vw, 5rem)" }}
-            >
-              Hi, I&apos;m{" "}
-              <span className="bg-gradient-to-r from-primary via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="font-display font-extrabold tracking-tight text-foreground leading-[1.15] text-balance hero-title">
+              <span className="block sm:inline sm:mr-3">
+                Hi, I&apos;m
+              </span>
+              <span className="inline-block whitespace-nowrap bg-gradient-to-r from-primary via-blue-500 to-cyan-400 bg-clip-text text-transparent">
                 {siteConfig.name}
               </span>
               {/* Visually hidden semantic text for screen readers & SEO */}

@@ -197,8 +197,7 @@ export function HeroRoleRotate({
           {roles.map((role) => (
             <span
               key={role}
-              className="col-start-1 row-start-1 font-display font-semibold tracking-tight text-center leading-[1.25] pb-[0.14em] px-2 text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-              style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
+              className="col-start-1 row-start-1 font-display font-semibold tracking-tight text-center leading-[1.25] pb-[0.14em] px-2 text-balance hero-role-text [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
             >
               {role}
             </span>
@@ -209,8 +208,7 @@ export function HeroRoleRotate({
         <div className="col-start-1 row-start-1 flex items-center justify-center w-full pointer-events-none">
           {prefersReducedMotion ? (
             <span
-              className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-              style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
+              className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 text-balance hero-role-text [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
             >
               {roles[0]}
             </span>
@@ -222,8 +220,7 @@ export function HeroRoleRotate({
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 inline-block text-balance [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-                style={{ fontSize: "clamp(1.35rem, 3.8vw, 2.6rem)" }}
+                className="font-display font-semibold tracking-tight text-center bg-gradient-to-r from-blue-500 via-cyan-400 to-sky-400 dark:from-blue-400 dark:via-cyan-300 dark:to-teal-300 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(56,189,248,0.3)] leading-[1.25] pb-[0.14em] px-2 inline-block text-balance hero-role-text [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
               >
                 {currentRole}
               </motion.span>
