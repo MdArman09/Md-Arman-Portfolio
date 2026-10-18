@@ -115,11 +115,26 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Large Decorative Wordmark */}
-        <div className="py-10 text-center select-none overflow-hidden opacity-10 dark:opacity-15 pointer-events-none">
-          <span className="font-display font-extrabold text-5xl sm:text-7xl lg:text-9xl tracking-tighter text-foreground whitespace-nowrap block">
-            MD ARMAN ALAM
-          </span>
+        {/* Large Decorative Wordmark (Scalable SVG ensures zero clipping/overflow on all device sizes) */}
+        <div className="py-6 sm:py-10 select-none overflow-hidden opacity-10 dark:opacity-15 pointer-events-none flex justify-center items-center w-full px-2">
+          <svg
+            viewBox="0 0 1000 110"
+            className="w-full max-w-5xl h-auto select-none"
+            aria-hidden="true"
+          >
+            <text
+              x="50%"
+              y="55%"
+              dominantBaseline="middle"
+              textAnchor="middle"
+              fill="currentColor"
+              className="font-display font-extrabold tracking-tight text-foreground uppercase"
+              fontSize="80"
+              letterSpacing="-0.02em"
+            >
+              MD ARMAN ALAM
+            </text>
+          </svg>
         </div>
 
         {/* Bottom bar */}
