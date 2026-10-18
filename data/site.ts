@@ -43,7 +43,7 @@ export const siteConfig: SiteConfig = {
     linkedin: "https://linkedin.com/in/md-arman-alam",
     resume: "/Md_Arman_SDE.pdf",
     resumeSde: "/Md_Arman_SDE.pdf",
-    resumeAbap: "/Md_Arman_ABAP.pdf",
+    resumeAbap: "/Md Arman - SAP ABAP (Resume).pdf",
   },
   about: {
     summary:

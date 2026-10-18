@@ -4,11 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/generate-resumes.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "generate:resumes": "node scripts/generate-resumes.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "clsx": "^2.1.1",

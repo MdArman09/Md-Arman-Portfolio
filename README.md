@@ -174,8 +174,10 @@ Open `data/projects.ts` and append an object to the `projects` array:
 ```
 * The new project will automatically appear in the **Projects Bento Grid**, the **Filter Tabs**, the **Command Palette (⌘K)**, the **Sitemap**, and receive its own case study page at `/projects/your-project-slug`.
 
-### 2. Update Resume
-Replace the placeholder at `public/Md_Arman_Alam_Resume.pdf` with your updated resume PDF. The "Download Resume" buttons across the navbar, hero, command palette, and footer will instantly point to it.
+### 2. Update Resumes
+The website supports dual targeted resumes for recruiters:
+- **SAP ABAP Resume**: Located at `public/Md Arman - SAP ABAP (Resume).pdf` (your authentic uploaded SAP ABAP resume).
+- **Software Engineer Resume**: Located at `public/Md_Arman_SDE.pdf`. When you want to update it, drop your updated PDF into `public/Md_Arman_SDE.pdf` (or place it in `Resume/` and copy it to `public/`). All download buttons across the hero, navbar, and command palette automatically serve your exact file without alterations.
 
 ### 3. Update Technical Skills or Experience
 * Edit `data/skills.ts` to add or modify chips in any of the 6 categories.

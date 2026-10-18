@@ -52,7 +52,7 @@ export function ResumeDropdown({ variant = "hero", className }: ResumeDropdownPr
       id: "abap",
       title: "SAP ABAP Resume (SAP Certified)",
       shortTitle: "SAP ABAP Resume",
-      filename: "Md_Arman_ABAP.pdf",
+      filename: "Md Arman - SAP ABAP (Resume).pdf",
       url: siteConfig.links.resumeAbap,
       icon: ShieldCheck,
       tag: "ABAP Cloud • Fiori • Open SQL",
