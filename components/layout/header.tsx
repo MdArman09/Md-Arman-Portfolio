@@ -5,6 +5,7 @@ import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { ThemeToggle } from "./theme-toggle";
 import { ResumeDropdown } from "@/components/shared/resume-dropdown";
+import { Logo } from "@/components/Logo";
 import { Search, Menu, X, ArrowUpRight } from "lucide-react";
 
 export function Header() {
@@ -55,18 +56,7 @@ export function Header() {
           className="pointer-events-auto w-full max-w-5xl rounded-full glass-panel px-3.5 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between shadow-lg shadow-black/5 dark:shadow-black/20 border border-border/60 transition-all duration-300"
         >
           {/* Brand Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-2 group cursor-pointer focus-visible:rounded-full"
-            aria-label="Md Arman Alam Home"
-          >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-blue-400 text-white flex items-center justify-center font-display font-bold text-xs tracking-wider shadow-xs group-hover:scale-105 transition-transform">
-              AA
-            </div>
-            <span className="font-display font-semibold text-sm tracking-tight hidden md:inline-block">
-              Arman<span className="text-primary font-bold">.dev</span>
-            </span>
-          </Link>
+          <Logo size={32} />
 
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-1">

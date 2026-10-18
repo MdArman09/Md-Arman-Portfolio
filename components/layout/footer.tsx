@@ -3,6 +3,7 @@ import { siteConfig } from "@/data/site";
 import { projects } from "@/data/projects";
 import { Mail, ArrowUpRight, Terminal } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
+import { Logo } from "@/components/Logo";
 
 export function Footer() {
   const currentYear = 2026;
@@ -16,10 +17,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border/60">
           {/* Identity & Status */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-display font-bold text-sm tracking-wide">
-                AA
-              </div>
+            <div className="flex items-center gap-3">
+              <Logo size={36} showWordmark={false} asLink={false} />
               <div>
                 <span className="font-display font-bold text-lg tracking-tight block">
                   {siteConfig.name}

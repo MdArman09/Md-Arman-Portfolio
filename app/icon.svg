@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <defs>
+    <linearGradient id="mark-grad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="dot-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Rounded-square dark background -->
+  <rect width="32" height="32" rx="7" fill="#090d16" />
+  <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+
+  <!-- Letter A Legs -->
+  <path
+    d="M 7.5 25 L 16 6.5 L 24.5 25"
+    stroke="url(#mark-grad)"
+    stroke-width="2.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Code Chevron > Crossbar -->
+  <path
+    d="M 12 13.5 L 17.5 16.5 L 12 19.5"
+    stroke="url(#mark-grad)"
+    stroke-width="2.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Accent Status Dot -->
+  <circle
+    cx="24.5"
+    cy="7"
+    r="2"
+    fill="#3b82f6"
+    filter="url(#dot-glow)"
+  />
+</svg>
