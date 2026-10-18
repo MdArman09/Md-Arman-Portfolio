@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { ThemeToggle } from "./theme-toggle";
+import { ResumeDropdown } from "@/components/shared/resume-dropdown";
 import { Search, Menu, X, ArrowUpRight } from "lucide-react";
 
 export function Header() {
@@ -43,7 +44,7 @@ export function Header() {
       {/* Accessibility Skip Link */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-lg focus:outline-hidden focus:ring-2 focus:ring-ring"
       >
         Skip to main content
       </a>
@@ -88,7 +89,7 @@ export function Header() {
             })}
           </div>
 
-          {/* Actions: Command Palette, Resume, ThemeToggle, Mobile Menu */}
+          {/* Actions: Command Palette, Dual Resume Dropdown, ThemeToggle, Mobile Menu */}
           <div className="flex items-center gap-2">
             {/* Quick Command Palette Button */}
             <button
@@ -112,17 +113,8 @@ export function Header() {
               <Search className="w-3.5 h-3.5" />
             </button>
 
-            {/* Resume button */}
-            <a
-              href={siteConfig.links.resume}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-xs"
-            >
-              <span>Resume</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
+            {/* Accessible Dual-Resume Dropdown for Desktop */}
+            <ResumeDropdown variant="nav" />
 
             {/* Theme Toggle */}
             <ThemeToggle />
@@ -171,17 +163,8 @@ export function Header() {
               ))}
             </div>
 
-            <div className="pt-3 border-t border-border/60 flex flex-col gap-2.5">
-              <a
-                href={siteConfig.links.resume}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-primary-foreground min-h-[44px]"
-              >
-                <span>Download Resume</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </a>
+            <div className="pt-3 border-t border-border/60">
+              <ResumeDropdown variant="mobile" />
             </div>
           </div>
         </div>

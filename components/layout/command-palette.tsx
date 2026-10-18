@@ -158,12 +158,22 @@ export function CommandPalette() {
           >
             <Command.Item
               onSelect={() =>
-                runCommand(() => window.open(siteConfig.links.resume, "_blank"))
+                runCommand(() => window.open(siteConfig.links.resumeSde, "_blank"))
               }
               className="flex cursor-pointer select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors aria-selected:bg-primary/10 aria-selected:text-primary"
             >
               <FileDown className="h-4 w-4 text-emerald-500" />
-              <span>Download Resume PDF</span>
+              <span>Download SDE Resume (Md_Arman_SDE.pdf)</span>
+            </Command.Item>
+
+            <Command.Item
+              onSelect={() =>
+                runCommand(() => window.open(siteConfig.links.resumeAbap, "_blank"))
+              }
+              className="flex cursor-pointer select-none items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors aria-selected:bg-primary/10 aria-selected:text-primary"
+            >
+              <FileDown className="h-4 w-4 text-blue-500" />
+              <span>Download SAP ABAP Resume (Md_Arman_ABAP.pdf)</span>
             </Command.Item>
 
             <Command.Item

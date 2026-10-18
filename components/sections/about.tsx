@@ -1,7 +1,7 @@
 import * as React from "react";
 import { siteConfig } from "@/data/site";
 import { SpotlightCard } from "@/components/21st/spotlight-card";
-import { Sparkles, Terminal } from "lucide-react";
+import { Sparkles, Terminal, ShieldCheck } from "lucide-react";
 
 export function About() {
   return (
@@ -17,7 +17,7 @@ export function About() {
             About Me
           </h2>
           <p className="text-muted-foreground text-sm max-w-xl">
-            Software Development Engineer with a strong foundation in Java enterprise systems, API security, and AI integrations.
+            Software Development Engineer with a strong foundation in Java enterprise systems, API security, and AI integrations, certified in SAP ABAP Cloud and Fiori development.
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export function About() {
                 </p>
                 <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Available for immediate SDE roles</span>
+                  <span>Available for SDE & SAP ABAP roles</span>
                 </div>
               </div>
 
@@ -74,14 +74,27 @@ export function About() {
 
           {/* Narrative Summary & Quick Facts */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-border/80 space-y-4">
+            <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-border/80 space-y-5">
               <h3 className="font-display font-bold text-lg text-foreground flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span>Engineering Philosophy</span>
+                <span>Engineering Philosophy & Specialization</span>
               </h3>
+
+              {/* Primary SDE Summary */}
               <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                 {siteConfig.about.summary}
               </p>
+
+              {/* Second Paragraph: SAP ABAP & Fiori Specialization */}
+              <div className="pt-4 border-t border-border/60 space-y-2">
+                <span className="text-xs font-mono font-semibold text-primary flex items-center gap-1.5 uppercase tracking-wider">
+                  <ShieldCheck className="w-4 h-4 text-primary" />
+                  <span>SAP Certified Associate</span>
+                </span>
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                  {siteConfig.about.sapSummary}
+                </p>
+              </div>
             </div>
 
             {/* Quick Facts Grid */}

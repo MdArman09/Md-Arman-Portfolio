@@ -8,6 +8,7 @@ import {
   MapPin,
   CheckCircle2,
   Clock,
+  ShieldCheck,
 } from "lucide-react";
 
 export function TimelineSection() {
@@ -24,7 +25,7 @@ export function TimelineSection() {
             Experience & Education
           </h2>
           <p className="text-muted-foreground text-sm max-w-xl">
-            Professional software development internship experience coupled with top-tier academic performance.
+            Software development internship, hands-on SAP ABAP guided training, and academic excellence.
           </p>
         </div>
 
@@ -32,6 +33,7 @@ export function TimelineSection() {
         <div className="relative pl-6 sm:pl-8 border-l-2 border-border/70 space-y-10 ml-2 sm:ml-4">
           {timelineItems.map((item) => {
             const isEducation = item.type === "education";
+            const isTraining = item.type === "training";
 
             return (
               <div key={item.id} className="relative group">
@@ -39,6 +41,8 @@ export function TimelineSection() {
                 <div className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-6 h-6 rounded-full border-2 border-background bg-card flex items-center justify-center text-primary shadow-xs group-hover:scale-110 group-hover:border-primary transition-all">
                   {isEducation ? (
                     <GraduationCap className="w-3 h-3 text-primary" />
+                  ) : isTraining ? (
+                    <ShieldCheck className="w-3 h-3 text-blue-500" />
                   ) : (
                     <Briefcase className="w-3 h-3 text-primary" />
                   )}
@@ -48,8 +52,20 @@ export function TimelineSection() {
                 <SpotlightCard className="p-6 space-y-4 bg-card/80">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/60 pb-3">
                     <div>
-                      <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-primary px-2 py-0.5 rounded bg-primary/10">
-                        {isEducation ? "Education" : "Internship"}
+                      <span
+                        className={`text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded ${
+                          isTraining
+                            ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                            : isEducation
+                            ? "bg-primary/10 text-primary"
+                            : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                        }`}
+                      >
+                        {isTraining
+                          ? "Guided Training"
+                          : isEducation
+                          ? "Education"
+                          : "Internship"}
                       </span>
                       <h3 className="font-display font-bold text-lg text-foreground mt-1.5">
                         {item.role}
@@ -69,7 +85,13 @@ export function TimelineSection() {
                         <span>{item.location}</span>
                       </div>
                       {item.gradeOrStatus && (
-                        <div className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                        <div
+                          className={`text-xs font-mono font-bold ${
+                            isTraining
+                              ? "text-blue-500"
+                              : "text-emerald-600 dark:text-emerald-400"
+                          }`}
+                        >
                           {item.gradeOrStatus}
                         </div>
                       )}

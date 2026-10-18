@@ -27,22 +27,29 @@ const fontMono = JetBrains_Mono({
   display: "swap",
 });
 
+const metaDescription = `${siteConfig.name} — Full-Stack Java Developer and SAP Certified ABAP Developer. Experienced in building secure Spring Boot enterprise backends, scalable RESTful APIs, AI-powered products, and modern SAP Fiori applications.`;
+
 export const metadata: Metadata = {
   title: {
-    default: `${siteConfig.name} | ${siteConfig.title}`,
+    default: `${siteConfig.name} | ${siteConfig.title} | ${siteConfig.secondaryTitle}`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: siteConfig.about.summary,
+  description: metaDescription,
   authors: [{ name: siteConfig.name, url: siteConfig.links.github }],
   creator: siteConfig.name,
   keywords: [
     "Md Arman Alam",
     "Software Development Engineer",
     "Full-Stack Java Developer",
+    "SAP ABAP Developer",
+    "SAP Certified Associate",
+    "ABAP Cloud",
+    "SAP Fiori",
+    "Open SQL",
+    "ALV Reports",
     "Spring Boot",
     "React 19",
     "AI Mock Interview Coach",
-    "Groq Llama 3.3",
     "Bangalore",
     "Portfolio",
   ],
@@ -51,14 +58,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://md-arman-portfolio.vercel.app",
-    title: `${siteConfig.name} | ${siteConfig.title}`,
-    description: siteConfig.about.summary,
+    title: `${siteConfig.name} | ${siteConfig.title} | ${siteConfig.secondaryTitle}`,
+    description: metaDescription,
     siteName: `${siteConfig.name} Portfolio`,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} | ${siteConfig.title}`,
-    description: siteConfig.about.summary,
+    title: `${siteConfig.name} | ${siteConfig.title} | ${siteConfig.secondaryTitle}`,
+    description: metaDescription,
   },
   robots: {
     index: true,
@@ -75,7 +82,20 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     name: siteConfig.name,
-    jobTitle: siteConfig.title,
+    jobTitle: [siteConfig.title, siteConfig.secondaryTitle],
+    alternateName: "SAP ABAP Developer",
+    knowsAbout: [
+      "Java",
+      "Spring Boot",
+      "SAP ABAP",
+      "SAP Fiori",
+      "Open SQL",
+      "ALV Reports",
+      "Data Dictionary (DDIC)",
+      "React 19",
+      "RESTful APIs",
+      "Relational Databases",
+    ],
     email: siteConfig.email,
     telephone: siteConfig.phone,
     address: {

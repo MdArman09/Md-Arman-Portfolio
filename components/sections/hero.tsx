@@ -5,8 +5,9 @@ import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { ShimmerButton } from "@/components/21st/shimmer-button";
 import { GridBackground } from "@/components/21st/grid-background";
+import { ResumeDropdown } from "@/components/shared/resume-dropdown";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
-import { Mail, ArrowDown, FileDown, Sparkles, MapPin } from "lucide-react";
+import { Mail, ArrowDown, Sparkles, MapPin } from "lucide-react";
 
 export function Hero() {
   return (
@@ -23,7 +24,7 @@ export function Hero() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-xs font-mono font-medium text-foreground tracking-wide">
-              Open to SDE Roles
+              Open to SDE & SAP ABAP roles
             </span>
             <span className="text-muted-foreground">•</span>
             <span className="text-xs text-muted-foreground flex items-center gap-1">
@@ -33,7 +34,7 @@ export function Hero() {
           </div>
 
           {/* Name & Headline */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight text-foreground">
               Hi, I&apos;m{" "}
               <span className="bg-gradient-to-r from-primary via-blue-500 to-cyan-400 bg-clip-text text-transparent">
@@ -41,9 +42,14 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="font-display text-lg sm:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto">
+            <p className="font-display text-lg sm:text-2xl text-foreground font-semibold max-w-2xl mx-auto">
               {siteConfig.title}
             </p>
+
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-medium border border-primary/30 bg-primary/10 text-primary">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span>{siteConfig.secondaryTitle}</span>
+            </div>
           </div>
 
           {/* 2-Sentence Intro */}
@@ -60,16 +66,8 @@ export function Hero() {
               </ShimmerButton>
             </Link>
 
-            <a
-              href={siteConfig.links.resume}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-border/80 bg-card hover:bg-muted/80 text-foreground transition-all duration-200 shadow-xs cursor-pointer"
-            >
-              <FileDown className="w-4 h-4 text-emerald-500" />
-              <span>Download Resume</span>
-            </a>
+            {/* Accessible Dual-Resume Dropdown */}
+            <ResumeDropdown variant="hero" />
 
             <Link
               href="#contact"

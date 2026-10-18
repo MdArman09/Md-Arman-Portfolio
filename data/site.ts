@@ -1,6 +1,7 @@
 export interface SiteConfig {
   name: string;
   title: string;
+  secondaryTitle: string;
   headline: string;
   intro: string;
   location: string;
@@ -10,9 +11,12 @@ export interface SiteConfig {
     github: string;
     linkedin: string;
     resume: string;
+    resumeSde: string;
+    resumeAbap: string;
   };
   about: {
     summary: string;
+    sapSummary: string;
     quickFacts: {
       label: string;
       value: string;
@@ -27,6 +31,7 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: "Md Arman Alam",
   title: "Software Development Engineer (SDE) | Full-Stack Java Developer",
+  secondaryTitle: "SAP ABAP Developer | SAP Certified",
   headline: "Software Development Engineer",
   intro:
     "I build secure, scalable full-stack applications, from robust Spring Boot enterprise APIs to high-performance AI-powered products.",
@@ -36,17 +41,22 @@ export const siteConfig: SiteConfig = {
   links: {
     github: "https://github.com/MdArman09",
     linkedin: "https://linkedin.com/in/md-arman-alam",
-    resume: "/Md_Arman_Alam_Resume.pdf",
+    resume: "/Md_Arman_SDE.pdf",
+    resumeSde: "/Md_Arman_SDE.pdf",
+    resumeAbap: "/Md_Arman_ABAP.pdf",
   },
   about: {
     summary:
       "Computer Science graduate (9.13 CGPA) with strong competencies in Java, Spring Boot, RESTful Web Services, and relational database systems. Hands-on experience developing modular 3-tier enterprise applications, designing secure APIs with Role-Based Access Control (RBAC), and implementing responsive SPAs using Angular. Proficient in SDLC best practices, automated build processes (Maven), code reviews via Git, and algorithmic problem-solving in Java.",
+    sapSummary:
+      "SAP Certified Associate in Back-End Development (ABAP Cloud) and SAP Fiori Application Development, with hands-on training in Open SQL, Data Dictionary (DDIC), ALV Reports, Internal Tables, and modular programming.",
     quickFacts: [
       { label: "Location", value: "Bangalore, Karnataka, India" },
       { label: "Academics", value: "9.13 / 10 CGPA" },
       { label: "Graduation", value: "B.Tech CSE (2022 - 2026)" },
       { label: "Core Focus", value: "Full-Stack Java, Distributed Systems & AI" },
-      { label: "Status", value: "Open to SDE Roles" },
+      { label: "SAP Focus", value: "ABAP Cloud, Fiori & Open SQL" },
+      { label: "Status", value: "Open to SDE & SAP ABAP Roles" },
     ],
   },
   navItems: [

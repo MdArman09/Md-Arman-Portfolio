@@ -1,6 +1,6 @@
 export interface TimelineItem {
   id: string;
-  type: "experience" | "education";
+  type: "experience" | "education" | "training";
   role: string;
   organization: string;
   location: string;
@@ -10,6 +10,21 @@ export interface TimelineItem {
 }
 
 export const timelineItems: TimelineItem[] = [
+  {
+    id: "eme-sap-training",
+    type: "training",
+    role: "SAP ABAP Trainee",
+    organization: "EME Company (Centurion University of Technology and Management, Bhubaneswar)",
+    location: "Bhubaneswar, Odisha, India",
+    period: "Aug 2025 - Oct 2025",
+    gradeOrStatus: "Training",
+    highlights: [
+      "Gained hands-on exposure to SAP ABAP development, including ALV Reports, Open SQL, Data Dictionary (DDIC), Internal Tables, and modular programming through guided training.",
+      "Practiced developing and testing ABAP programs involving database CRUD operations and Open SQL-based data retrieval using custom and standard SAP tables.",
+      "Applied debugging and modular programming techniques on ABAP exercises and mentor-guided development tasks.",
+      "Gained conceptual understanding of the RICEF framework (Reports, Interfaces, Conversions, Enhancements, Forms) used in SAP implementation projects.",
+    ],
+  },
   {
     id: "plasmid-internship",
     type: "experience",

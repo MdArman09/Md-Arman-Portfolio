@@ -2,6 +2,10 @@ export interface SkillGroup {
   category: string;
   description: string;
   skills: string[];
+  subgroups?: {
+    name: string;
+    items: string[];
+  }[];
 }
 
 export const skillGroups: SkillGroup[] = [
@@ -10,10 +14,59 @@ export const skillGroups: SkillGroup[] = [
     description: "Type-safe systems, object-oriented paradigms, and database query languages",
     skills: [
       "Java (Core & J2EE)",
-      "SQL",
+      "SQL / Open SQL",
+      "ABAP",
       "TypeScript",
       "JavaScript",
       "HTML5/CSS3",
+    ],
+  },
+  {
+    category: "SAP & ABAP (Certified Specialty)",
+    description: "Official SAP certifications in ABAP Cloud & Fiori, enterprise DDIC, and RICEF reporting",
+    skills: [
+      "Data Dictionary (DDIC)",
+      "Internal Tables",
+      "ALV Reports",
+      "Selection Screens",
+      "Subroutines & Modular Programming",
+      "ABAP Debugging",
+      "OO ABAP",
+      "Classical & Interactive Reports",
+      "RICEF Framework",
+      "BAPI",
+      "SmartForms",
+      "SAP Logon & SAP GUI",
+      "SAP Fiori",
+    ],
+    subgroups: [
+      {
+        name: "ABAP Development",
+        items: [
+          "Data Dictionary (DDIC)",
+          "Internal Tables",
+          "ALV Reports",
+          "Selection Screens",
+          "Subroutines",
+          "Modular Programming",
+          "Debugging",
+        ],
+      },
+      {
+        name: "ABAP Concepts",
+        items: [
+          "OO ABAP",
+          "Classical Reports",
+          "Interactive Reports",
+          "RICEF",
+          "BAPI",
+          "SmartForms",
+        ],
+      },
+      {
+        name: "SAP Technologies",
+        items: ["SAP Logon", "SAP GUI", "SAP Fiori"],
+      },
     ],
   },
   {
@@ -32,7 +85,7 @@ export const skillGroups: SkillGroup[] = [
   {
     category: "Databases & Cloud",
     description: "Relational modeling, transaction isolation, and cloud authentication",
-    skills: ["MySQL", "Firebase Auth"],
+    skills: ["MySQL", "MongoDB Atlas", "Firebase Auth"],
   },
   {
     category: "Developer Tools",

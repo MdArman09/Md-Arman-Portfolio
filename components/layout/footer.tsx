@@ -25,7 +25,7 @@ export function Footer() {
                   {siteConfig.name}
                 </span>
                 <span className="text-xs text-muted-foreground block">
-                  {siteConfig.title}
+                  {siteConfig.title} • {siteConfig.secondaryTitle}
                 </span>
               </div>
             </div>
@@ -36,7 +36,7 @@ export function Footer() {
 
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Available for Software Development Engineer (SDE) opportunities</span>
+              <span>Available for SDE & SAP ABAP roles</span>
             </div>
           </div>
 
