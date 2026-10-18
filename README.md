@@ -113,8 +113,8 @@ Modern React components sourced and adapted from **21st.dev**, unified under cus
 ### 2. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/MdArman09/md-arman-portfolio.git
-cd md-arman-portfolio
+git clone https://github.com/MdArman09/Md-Arman-Portfolio.git
+cd Md-Arman-Portfolio
 
 # Install dependencies
 npm install
@@ -188,9 +188,9 @@ Replace the placeholder at `public/Md_Arman_Alam_Resume.pdf` with your updated r
 
 The project is built specifically for zero-config deployment on Vercel:
 
-1. Push your repository to GitHub (`https://github.com/MdArman09/md-arman-portfolio`).
+1. Push your repository to GitHub (`https://github.com/MdArman09/Md-Arman-Portfolio`).
 2. Log in to [Vercel](https://vercel.com) and click **"Add New Project"**.
-3. Import your `md-arman-portfolio` repository.
+3. Import your `Md-Arman-Portfolio` repository.
 4. Leave the default settings:
    * **Framework Preset**: Next.js
    * **Root Directory**: `./`
