@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CommandPalette } from "@/components/layout/command-palette";
+import { DynamicTitle } from "@/components/layout/dynamic-title";
 import { ScrollProgress } from "@/components/shared/scroll-progress";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { siteConfig } from "@/data/site";
@@ -32,7 +33,7 @@ const metaDescription = `${siteConfig.name} — Full-Stack Java Developer and SA
 export const metadata: Metadata = {
   title: {
     default: `${siteConfig.name} | ${siteConfig.title} | ${siteConfig.secondaryTitle}`,
-    template: `%s | ${siteConfig.name}`,
+    template: `${siteConfig.name} | %s`,
   },
   description: metaDescription,
   authors: [{ name: siteConfig.name, url: siteConfig.links.github }],
@@ -130,6 +131,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <DynamicTitle />
           <ScrollProgress />
           <Header />
           <CommandPalette />

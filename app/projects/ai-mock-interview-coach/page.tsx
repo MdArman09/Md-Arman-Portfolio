@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Case Study: AI Mock Interview Coach | Md Arman Alam",
+  title: "AI Mock Interview Coach",
   description:
     "Full-stack case study of AI Mock Interview Coach: real-time speech diagnostics, STAR feedback, and resilient Groq LLM orchestration.",
 };

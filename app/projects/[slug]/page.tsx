@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!project) return { title: "Project Not Found" };
 
   return {
-    title: `${project.title} | Case Study | Md Arman Alam`,
+    title: project.title,
     description: project.tagline,
   };
 }
