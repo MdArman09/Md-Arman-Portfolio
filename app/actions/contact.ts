@@ -71,6 +71,8 @@ export async function sendContactMessage(
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         Origin: "https://md-arman-portfolio.vercel.app",
         Referer: "https://md-arman-portfolio.vercel.app/",
       },
@@ -85,18 +87,24 @@ export async function sendContactMessage(
       }),
     });
 
-    const data = await res.json().catch(() => ({}));
+    const text = await res.text().catch(() => "");
+    let data: Record<string, unknown> = {};
+    try {
+      data = JSON.parse(text);
+    } catch {
+      // not JSON
+    }
 
     const isSuccess =
       res.ok &&
       (data.success === "true" ||
         data.success === true ||
-        data.message?.toLowerCase().includes("activation") ||
-        data.message?.toLowerCase().includes("sent") ||
-        data.message?.toLowerCase().includes("success"));
+        String(data.message || "").toLowerCase().includes("activation") ||
+        String(data.message || "").toLowerCase().includes("sent") ||
+        String(data.message || "").toLowerCase().includes("success"));
 
     if (isSuccess) {
-      if (data.message?.toLowerCase().includes("activation")) {
+      if (String(data.message || "").toLowerCase().includes("activation")) {
         return {
           success: true,
           message:
@@ -109,7 +117,7 @@ export async function sendContactMessage(
         message: "Thank you! Your message has been sent directly to arman.dev09@gmail.com.",
       };
     } else {
-      console.error("Email delivery provider response:", data);
+      console.error("Email delivery provider response:", res.status, text);
     }
   } catch (deliveryError: unknown) {
     console.error("Direct email delivery error:", deliveryError);
