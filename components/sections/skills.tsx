@@ -66,19 +66,23 @@ export function Skills() {
                 key={group.category}
                 initial={false}
                 animate={
-                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
+                  isInView || prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
                 }
-                transition={{
-                  duration: 0.55,
-                  delay: waveDelay,
-                  ease: MOTION_EASE,
-                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: 0.55,
+                        delay: waveDelay,
+                        ease: MOTION_EASE,
+                      }
+                }
                 className="relative rounded-2xl flex flex-col"
               >
                 {/* SAP Certified specialty card: slow rotating animated conic gradient border */}
-                {isSapAbap && !prefersReducedMotion && (
+                {isSapAbap && (
                   <div
-                    className="pointer-events-none absolute -inset-[1px] rounded-2xl overflow-hidden z-0"
+                    className="pointer-events-none absolute -inset-[1px] rounded-2xl overflow-hidden z-0 motion-reduce:hidden"
                     aria-hidden="true"
                   >
                     <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_300deg,hsl(var(--primary))_360deg)] animate-conic-rotate opacity-50" />

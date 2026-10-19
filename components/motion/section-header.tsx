@@ -30,41 +30,6 @@ export function SectionHeader({
   const isInView = useSafeInView(ref);
   const prefersReducedMotion = useReducedMotion();
 
-  if (prefersReducedMotion) {
-    return (
-      <div
-        ref={ref}
-        data-scroll-target
-        className={cn(
-          rightAction
-            ? "flex flex-col sm:flex-row sm:items-end justify-between gap-4"
-            : "space-y-2",
-          align === "center" ? "text-center sm:text-left" : "",
-          className
-        )}
-      >
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-primary bg-primary/10 border border-primary/20">
-            {eyebrowIcon}
-            <span>{eyebrowText}</span>
-          </div>
-          <h2
-            tabIndex={-1}
-            className="font-display font-bold text-3xl sm:text-4xl text-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
-          >
-            {title}
-          </h2>
-          {subtitle && (
-            <p className={cn("text-muted-foreground text-sm leading-relaxed", subtitleMaxWidth)}>
-              {subtitle}
-            </p>
-          )}
-        </div>
-        {rightAction && <div>{rightAction}</div>}
-      </div>
-    );
-  }
-
   return (
     <div
       ref={ref}
@@ -82,14 +47,18 @@ export function SectionHeader({
         <motion.div
           initial={false}
           animate={
-            isInView
+            isInView || prefersReducedMotion
               ? { opacity: 1, y: 0 }
               : { opacity: 0, y: 8 }
           }
-          transition={{
-            duration: 0.45,
-            ease: MOTION_EASE,
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 0.45,
+                  ease: MOTION_EASE,
+                }
+          }
           className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-primary bg-primary/10 border border-primary/20"
         >
           {eyebrowIcon}
@@ -102,15 +71,19 @@ export function SectionHeader({
             tabIndex={-1}
             initial={false}
             animate={
-              isInView
+              isInView || prefersReducedMotion
                 ? { y: 0, opacity: 1 }
                 : { y: "100%", opacity: 0 }
             }
-            transition={{
-              duration: 0.55,
-              delay: 0.12,
-              ease: MOTION_EASE,
-            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : {
+                    duration: 0.55,
+                    delay: 0.12,
+                    ease: MOTION_EASE,
+                  }
+            }
             className="font-display font-bold text-3xl sm:text-4xl text-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
           >
             {title}
@@ -122,15 +95,19 @@ export function SectionHeader({
           <motion.p
             initial={false}
             animate={
-              isInView
+              isInView || prefersReducedMotion
                 ? { opacity: 1, y: 0 }
                 : { opacity: 0, y: 8 }
             }
-            transition={{
-              duration: 0.5,
-              delay: 0.24,
-              ease: MOTION_EASE,
-            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : {
+                    duration: 0.5,
+                    delay: 0.24,
+                    ease: MOTION_EASE,
+                  }
+            }
             className={cn("text-muted-foreground text-sm leading-relaxed", subtitleMaxWidth)}
           >
             {subtitle}
@@ -142,15 +119,19 @@ export function SectionHeader({
         <motion.div
           initial={false}
           animate={
-            isInView
+            isInView || prefersReducedMotion
               ? { opacity: 1, y: 0 }
               : { opacity: 0, y: 12 }
           }
-          transition={{
-            duration: 0.5,
-            delay: 0.28,
-            ease: MOTION_EASE,
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 0.5,
+                  delay: 0.28,
+                  ease: MOTION_EASE,
+                }
+          }
           className="w-full sm:w-auto"
         >
           {rightAction}

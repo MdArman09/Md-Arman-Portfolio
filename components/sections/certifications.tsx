@@ -42,19 +42,23 @@ export function Certifications() {
                 key={item.id}
                 initial={false}
                 animate={
-                  isInView
+                  isInView || prefersReducedMotion
                     ? { opacity: 1, rotateX: 0, y: 0 }
                     : {
                         opacity: 0,
-                        rotateX: prefersReducedMotion ? 0 : 20,
-                        y: prefersReducedMotion ? 0 : 24,
+                        rotateX: 20,
+                        y: 24,
                       }
                 }
-                transition={{
-                  duration: 0.65,
-                  delay: cardDelay,
-                  ease: MOTION_EASE,
-                }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: 0.65,
+                        delay: cardDelay,
+                        ease: MOTION_EASE,
+                      }
+                }
                 style={{ transformOrigin: "bottom center" }}
                 whileHover={prefersReducedMotion ? {} : { y: -6 }}
                 className="group relative rounded-2xl will-change-transform flex flex-col"
@@ -67,12 +71,10 @@ export function Certifications() {
                   }`}
                 >
                   {/* Diagonal shine sweep across card on hover */}
-                  {!prefersReducedMotion && (
-                    <div
-                      className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/10 dark:via-white/5 to-transparent -rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"
-                      aria-hidden="true"
-                    />
-                  )}
+                  <div
+                    className="pointer-events-none absolute -inset-full bg-gradient-to-r from-transparent via-white/10 dark:via-white/5 to-transparent -rotate-45 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out motion-reduce:hidden"
+                    aria-hidden="true"
+                  />
 
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">

@@ -14,16 +14,6 @@ export function SectionDivider({ className }: SectionDividerProps) {
   const isInView = useSafeInView(ref, { amount: 0.1 });
   const prefersReducedMotion = useReducedMotion();
 
-  if (prefersReducedMotion) {
-    return (
-      <div
-        ref={ref}
-        aria-hidden="true"
-        className={cn("w-full h-px bg-border/50", className)}
-      />
-    );
-  }
-
   return (
     <div
       ref={ref}
@@ -33,14 +23,18 @@ export function SectionDivider({ className }: SectionDividerProps) {
       <motion.div
         initial={false}
         animate={
-          isInView
+          isInView || prefersReducedMotion
             ? { scaleX: 1, opacity: 1 }
             : { scaleX: 0, opacity: 0 }
         }
-        transition={{
-          duration: DURATIONS.slow,
-          ease: MOTION_EASE,
-        }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : {
+                duration: DURATIONS.slow,
+                ease: MOTION_EASE,
+              }
+        }
         style={{ originX: 0 }}
         className="w-full h-full bg-border/50"
       />

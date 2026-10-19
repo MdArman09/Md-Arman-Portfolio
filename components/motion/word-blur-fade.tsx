@@ -17,10 +17,6 @@ export function WordBlurFade({ text, className, delay = 0 }: WordBlurFadeProps) 
   const prefersReducedMotion = useReducedMotion();
   const words = React.useMemo(() => text.split(" "), [text]);
 
-  if (prefersReducedMotion) {
-    return <p className={className}>{text}</p>;
-  }
-
   // Calculate per-word stagger capped to keep total duration well under 900ms
   const stagger = Math.min(0.02, 0.5 / Math.max(words.length, 1));
 
@@ -31,15 +27,19 @@ export function WordBlurFade({ text, className, delay = 0 }: WordBlurFadeProps) 
           key={`${word}-${i}`}
           initial={false}
           animate={
-            isInView
+            isInView || prefersReducedMotion
               ? { opacity: 1, filter: "blur(0px)", y: 0 }
               : { opacity: 0, filter: "blur(4px)", y: 6 }
           }
-          transition={{
-            duration: 0.28,
-            delay: delay + i * stagger,
-            ease: MOTION_EASE,
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 0.28,
+                  delay: delay + i * stagger,
+                  ease: MOTION_EASE,
+                }
+          }
           className="inline-block mr-[0.25em] last:mr-0"
         >
           {word}

@@ -80,7 +80,7 @@ export function TimelineSection() {
           <motion.div
             initial={false}
             animate={
-              isTimelineVisible
+              isTimelineVisible || prefersReducedMotion
                 ? { clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }
                 : { clipPath: "inset(0% 0% 100% 0%)", opacity: 0.001 }
             }
@@ -94,16 +94,14 @@ export function TimelineSection() {
           />
 
           {/* Scroll-linked progress fill vertical rail */}
-          {!prefersReducedMotion && (
-            <motion.div
-              style={{
-                scaleY: railFillScaleY,
-                originY: 0,
-              }}
-              className="absolute left-[16px] sm:left-[20px] top-3 bottom-4 w-[2px] -translate-x-1/2 bg-gradient-to-b from-primary via-primary to-blue-500 pointer-events-none z-0"
-              aria-hidden="true"
-            />
-          )}
+          <motion.div
+            style={{
+              scaleY: railFillScaleY,
+              originY: 0,
+            }}
+            className="absolute left-[16px] sm:left-[20px] top-3 bottom-4 w-[2px] -translate-x-1/2 bg-gradient-to-b from-primary via-primary to-blue-500 pointer-events-none z-0 motion-reduce:hidden"
+            aria-hidden="true"
+          />
 
           {timelineItems.map((item, index) => {
             const isEducation = item.type === "education";
@@ -119,7 +117,7 @@ export function TimelineSection() {
                 <motion.div
                   initial={false}
                   animate={
-                    isTimelineVisible
+                    isTimelineVisible || prefersReducedMotion
                       ? { scale: 1, opacity: 1 }
                       : { scale: 0.6, opacity: 0.001 }
                   }
@@ -152,15 +150,19 @@ export function TimelineSection() {
                         <motion.span
                           initial={false}
                           animate={
-                            isTimelineVisible
+                            isTimelineVisible || prefersReducedMotion
                               ? { opacity: 1, y: 0 }
                               : { opacity: 0, y: 4 }
                           }
-                          transition={{
-                            duration: 0.3,
-                            delay: metaDelay,
-                            ease: MOTION_EASE,
-                          }}
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.3,
+                                  delay: metaDelay,
+                                  ease: MOTION_EASE,
+                                }
+                          }
                           className={`inline-block text-[10px] font-mono font-semibold uppercase tracking-wider px-2 py-0.5 rounded ${
                             isTraining
                               ? "bg-blue-500/10 text-blue-500 border border-blue-500/20"
@@ -187,15 +189,19 @@ export function TimelineSection() {
                       <motion.div
                         initial={false}
                         animate={
-                          isTimelineVisible
+                          isTimelineVisible || prefersReducedMotion
                             ? { opacity: 1, y: 0 }
                             : { opacity: 0, y: 4 }
                         }
-                        transition={{
-                          duration: 0.3,
-                          delay: metaDelay,
-                          ease: MOTION_EASE,
-                        }}
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : {
+                                duration: 0.3,
+                                delay: metaDelay,
+                                ease: MOTION_EASE,
+                              }
+                        }
                         className="text-xs text-muted-foreground font-mono space-y-1 sm:text-right"
                       >
                         <div className="flex items-center sm:justify-end gap-1.5">
@@ -225,16 +231,21 @@ export function TimelineSection() {
                       {item.highlights.map((point, pointIndex) => (
                         <motion.li
                           key={pointIndex}
-                          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 3 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, amount: 0.2 }}
-                          transition={{
-                            duration: 0.25,
-                            delay: prefersReducedMotion
-                              ? 0
-                              : cardDelay + 0.35 + pointIndex * 0.06,
-                            ease: "easeOut",
-                          }}
+                          initial={false}
+                          animate={
+                            isTimelineVisible || prefersReducedMotion
+                              ? { opacity: 1, y: 0 }
+                              : { opacity: 0, y: 3 }
+                          }
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.25,
+                                  delay: cardDelay + 0.35 + pointIndex * 0.06,
+                                  ease: "easeOut",
+                                }
+                          }
                           className="flex items-start gap-2"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />

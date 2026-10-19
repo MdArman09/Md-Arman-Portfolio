@@ -55,7 +55,7 @@ export function About() {
             <motion.div
               initial={false}
               animate={
-                isInView
+                isInView || prefersReducedMotion
                   ? {
                       opacity: 1,
                       y: 0,
@@ -65,14 +65,18 @@ export function About() {
                   : {
                       opacity: 0,
                       y: 24,
-                      rotateX: prefersReducedMotion ? 0 : 8,
+                      rotateX: 8,
                       rotateY: 0,
                     }
               }
-              transition={{
-                duration: 0.65,
-                ease: MOTION_EASE,
-              }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: 0.65,
+                      ease: MOTION_EASE,
+                    }
+              }
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               className="will-change-transform"
@@ -94,19 +98,17 @@ export function About() {
                 {/* Photo / Monogram Slot */}
                 <div className="relative mx-auto w-36 h-36">
                   {/* One-time pulsing ring */}
-                  {!prefersReducedMotion && (
-                    <motion.div
-                      initial={false}
-                      animate={
-                        isInView
-                          ? { scale: [1, 1.25, 1], opacity: [0.6, 0, 0] }
-                          : { scale: 1, opacity: 0 }
-                      }
-                      transition={{ duration: 0.85, delay: 0.3 }}
-                      className="absolute inset-0 rounded-3xl border-2 border-primary/40 pointer-events-none"
-                      aria-hidden="true"
-                    />
-                  )}
+                  <motion.div
+                    initial={false}
+                    animate={
+                      isInView && !prefersReducedMotion
+                        ? { scale: [1, 1.25, 1], opacity: [0.6, 0, 0] }
+                        : { scale: 1, opacity: 0 }
+                    }
+                    transition={{ duration: 0.85, delay: 0.3 }}
+                    className="absolute inset-0 rounded-3xl border-2 border-primary/40 pointer-events-none motion-reduce:hidden"
+                    aria-hidden="true"
+                  />
 
                   <motion.div
                     initial={false}

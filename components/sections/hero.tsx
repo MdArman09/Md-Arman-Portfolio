@@ -18,17 +18,16 @@ export function Hero() {
   const prefersReducedMotion = useReducedMotion();
 
   const getFadeUpProps = (delay: number) => {
-    if (prefersReducedMotion) {
-      return {};
-    }
     return {
       initial: { opacity: 0, y: 16 },
       animate: { opacity: 1, y: 0 },
-      transition: {
-        duration: 0.6,
-        delay,
-        ease: MOTION_EASE,
-      },
+      transition: prefersReducedMotion
+        ? { duration: 0 }
+        : {
+            duration: 0.6,
+            delay,
+            ease: MOTION_EASE,
+          },
     };
   };
 

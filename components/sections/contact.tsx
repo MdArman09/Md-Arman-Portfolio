@@ -172,18 +172,22 @@ export function Contact() {
           <motion.div
             initial={false}
             animate={
-              isInView
+              isInView || prefersReducedMotion
                 ? { opacity: 1, x: 0, y: 0 }
                 : {
                     opacity: 0,
-                    x: isMobile || prefersReducedMotion ? 0 : -40,
-                    y: isMobile && !prefersReducedMotion ? 16 : 0,
+                    x: isMobile ? 0 : -40,
+                    y: isMobile ? 16 : 0,
                   }
             }
-            transition={{
-              duration: 0.6,
-              ease: MOTION_EASE,
-            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : {
+                    duration: 0.6,
+                    ease: MOTION_EASE,
+                  }
+            }
             className="lg:col-span-5 space-y-4"
           >
             <SpotlightCard className="p-6 space-y-6 bg-card/80">
@@ -289,19 +293,23 @@ export function Contact() {
           <motion.div
             initial={false}
             animate={
-              isInView
+              isInView || prefersReducedMotion
                 ? { opacity: 1, x: 0, y: 0 }
                 : {
                     opacity: 0,
-                    x: isMobile || prefersReducedMotion ? 0 : 40,
-                    y: isMobile && !prefersReducedMotion ? 16 : 0,
+                    x: isMobile ? 0 : 40,
+                    y: isMobile ? 16 : 0,
                   }
             }
-            transition={{
-              duration: 0.6,
-              delay: 0.15,
-              ease: MOTION_EASE,
-            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : {
+                    duration: 0.6,
+                    delay: 0.15,
+                    ease: MOTION_EASE,
+                  }
+            }
             className="lg:col-span-7"
           >
             <SpotlightCard className="p-6 sm:p-8 bg-card">

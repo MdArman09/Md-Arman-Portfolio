@@ -111,19 +111,19 @@ export function FeaturedProject() {
         <motion.div
           initial={false}
           animate={
-            isInView
+            isInView || prefersReducedMotion
               ? { opacity: 1, scale: 1, y: 0 }
+              : { opacity: 0, scale: 0.96, y: 20 }
+          }
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
               : {
-                  opacity: 0,
-                  scale: prefersReducedMotion ? 1 : 0.96,
-                  y: prefersReducedMotion ? 0 : 20,
+                  duration: 0.65,
+                  delay: 0.15,
+                  ease: MOTION_EASE,
                 }
           }
-          transition={{
-            duration: 0.65,
-            delay: 0.15,
-            ease: MOTION_EASE,
-          }}
           className="relative rounded-2xl"
         >
           <SpotlightCard className="p-5 sm:p-10 border-border/80 space-y-8 relative overflow-hidden">

@@ -38,20 +38,12 @@ export function Reveal({
   const actualBlur = isMobile ? false : blur;
   const actualDelay = isMobile ? delay * 0.5 : delay;
 
-  if (prefersReducedMotion) {
-    return (
-      <div ref={ref} className={cn("w-full", className)}>
-        {children}
-      </div>
-    );
-  }
-
   return (
     <div ref={ref} className={cn("w-full", className)}>
       <motion.div
         initial={false}
         animate={
-          isInView
+          isInView || prefersReducedMotion
             ? {
                 opacity: 1,
                 y: 0,
@@ -63,11 +55,15 @@ export function Reveal({
                 filter: actualBlur ? "blur(6px)" : "blur(0px)",
               }
         }
-        transition={{
-          duration,
-          delay: actualDelay,
-          ease: MOTION_EASE,
-        }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : {
+                duration,
+                delay: actualDelay,
+                ease: MOTION_EASE,
+              }
+        }
         className="w-full"
       >
         {children}

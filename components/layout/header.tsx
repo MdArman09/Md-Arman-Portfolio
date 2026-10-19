@@ -13,16 +13,7 @@ import { scrollToSection, getNavOffset } from "@/lib/scroll";
 export function Header() {
   const prefersReducedMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [activeSection, setActiveSection] = React.useState<string>(() => {
-    if (typeof window !== "undefined" && window.location.hash) {
-      const hashId = window.location.hash.replace("#", "");
-      const valid = siteConfig.navItems.some(
-        (item) => item.href.replace("/#", "") === hashId
-      );
-      if (valid) return hashId;
-    }
-    return "";
-  });
+  const [activeSection, setActiveSection] = React.useState<string>("");
   const isClickScrollingRef = React.useRef(false);
   const clickTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -181,7 +172,71 @@ export function Header() {
     };
   }, []);
 
+  const scrollYRef = React.useRef(0);
+
+  // 6. Lock background scrolling when mobile navigation drawer is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      const scrollY = window.scrollY;
+      scrollYRef.current = scrollY;
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setMobileMenuOpen(false);
+        }
+      };
+
+      const handleResize = () => {
+        if (window.innerWidth >= 1024) {
+          setMobileMenuOpen(false);
+        }
+      };
+
+      window.addEventListener("keydown", handleKeyDown);
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        if (document.body.style.position === "fixed") {
+          document.body.style.position = "";
+          document.body.style.top = "";
+          document.body.style.left = "";
+          document.body.style.right = "";
+          document.body.style.width = "";
+          document.body.style.overflow = "";
+          document.body.style.paddingRight = "";
+          window.scrollTo(0, scrollY);
+        }
+        window.removeEventListener("keydown", handleKeyDown);
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, [mobileMenuOpen]);
+
   const openPalette = () => {
+    if (document.body.style.position === "fixed") {
+      const savedScrollY = scrollYRef.current;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+      window.scrollTo(0, savedScrollY);
+    }
+    setMobileMenuOpen(false);
     window.dispatchEvent(new CustomEvent("open-command-palette"));
   };
 
@@ -204,7 +259,20 @@ export function Header() {
         isClickScrollingRef.current = false;
       }, 950);
 
-      // Close mobile drawer first so body scroll is unblocked
+      // Restore scroll lock immediately before calculating section offset and scrolling
+      if (document.body.style.position === "fixed") {
+        const savedScrollY = scrollYRef.current;
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+        window.scrollTo(0, savedScrollY);
+      }
+
+      // Close mobile drawer
       setMobileMenuOpen(false);
 
       // Scroll to section content start using shared utility
@@ -212,6 +280,15 @@ export function Header() {
         scrollToSection(sectionId);
       });
     } else {
+      if (document.body.style.position === "fixed") {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+      }
       setMobileMenuOpen(false);
     }
   };
@@ -225,6 +302,19 @@ export function Header() {
       clickTimeoutRef.current = setTimeout(() => {
         isClickScrollingRef.current = false;
       }, 850);
+
+      if (document.body.style.position === "fixed") {
+        const savedScrollY = scrollYRef.current;
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.width = "";
+        document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+        window.scrollTo(0, savedScrollY);
+      }
+
       setMobileMenuOpen(false);
       requestAnimationFrame(() => {
         scrollToSection("hero");

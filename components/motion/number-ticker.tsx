@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useMotionValue, useSpring, useTransform, useReducedMotion } from "framer-motion";
+import { useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useSafeInView } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -66,7 +66,7 @@ export function NumberTicker({
       ref={ref}
       className={cn("inline-block tabular-nums tracking-normal [font-variant-numeric:tabular-nums]", className)}
     >
-      {prefersReducedMotion ? value.toFixed(decimalPlaces) : displayValue}
+      {displayValue}
     </span>
   );
 }

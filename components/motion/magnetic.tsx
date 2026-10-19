@@ -44,10 +44,6 @@ export function Magnetic({
     setPosition({ x: 0, y: 0 });
   };
 
-  if (!isDesktop || prefersReducedMotion) {
-    return <div className={cn("inline-block", className)}>{children}</div>;
-  }
-
   return (
     <motion.div
       ref={ref}

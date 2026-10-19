@@ -3,9 +3,8 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useSafeInView, MOTION_EASE, STAGGERS, DURATIONS } from "@/lib/motion";
-import { cn } from "@/lib/utils";
 
-interface StaggerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface StaggerProps {
   children: React.ReactNode;
   staggerDelay?: number;
   delayChildren?: number;
@@ -17,7 +16,6 @@ export function Stagger({
   staggerDelay = STAGGERS.desktop,
   delayChildren = 0,
   className,
-  ...props
 }: StaggerProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const isInView = useSafeInView(ref);
@@ -31,21 +29,17 @@ export function Stagger({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const actualStagger = isMobile ? staggerDelay * 0.5 : staggerDelay;
-
-  if (prefersReducedMotion) {
-    return (
-      <div ref={ref} className={className} {...props}>
-        {children}
-      </div>
-    );
-  }
+  const actualStagger = prefersReducedMotion
+    ? 0
+    : isMobile
+    ? staggerDelay * 0.5
+    : staggerDelay;
 
   return (
-    <div ref={ref} className={className} {...props}>
+    <div ref={ref} className={className}>
       <motion.div
         initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        animate={isInView || prefersReducedMotion ? "visible" : "hidden"}
         variants={{
           hidden: { opacity: 1 },
           visible: {
@@ -77,10 +71,6 @@ export function StaggerItem({
 }: StaggerItemProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
     <motion.div
       variants={{
@@ -88,10 +78,12 @@ export function StaggerItem({
         visible: {
           opacity: 1,
           y: 0,
-          transition: {
-            duration: DURATIONS.normal,
-            ease: MOTION_EASE,
-          },
+          transition: prefersReducedMotion
+            ? { duration: 0 }
+            : {
+                duration: DURATIONS.normal,
+                ease: MOTION_EASE,
+              },
         },
       }}
       className={className}
