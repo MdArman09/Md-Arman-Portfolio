@@ -1,15 +1,21 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { projects } from "@/data/projects";
 import { Mail, ArrowUpRight, Terminal } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/shared/icons";
 import { Logo } from "@/components/Logo";
 import { scrollToSection } from "@/lib/scroll";
+import { useSafeInView, MOTION_EASE } from "@/lib/motion";
 
 export function Footer() {
   const currentYear = 2026;
+  const footerRef = React.useRef<HTMLElement>(null);
+  const isInView = useSafeInView(footerRef);
+  const prefersReducedMotion = useReducedMotion();
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -21,15 +27,27 @@ export function Footer() {
     }
   };
 
+  const getColProps = (idx: number) => {
+    if (prefersReducedMotion) return {};
+    return {
+      initial: false,
+      animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+      transition: { duration: 0.5, delay: idx * 0.08, ease: MOTION_EASE },
+    };
+  };
+
   return (
-    <footer className="relative border-t border-border/70 bg-card/40 backdrop-blur-md pt-16 pb-12 overflow-hidden">
+    <footer
+      ref={footerRef}
+      className="relative border-t border-border/70 bg-card/40 backdrop-blur-md pt-16 pb-12 overflow-hidden"
+    >
       {/* Decorative gradient glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-border/60">
           {/* Identity & Status */}
-          <div className="md:col-span-2 space-y-4">
+          <motion.div {...getColProps(0)} className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <Logo size={36} showWordmark={false} asLink={false} />
               <div>
@@ -50,10 +68,10 @@ export function Footer() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Available for SDE & SAP ABAP roles</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Quick Navigation */}
-          <div className="space-y-3">
+          <motion.div {...getColProps(1)} className="space-y-3">
             <h3 className="font-display text-xs font-semibold uppercase tracking-wider text-foreground">
               Navigation
             </h3>
@@ -70,10 +88,10 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Case Studies & Social */}
-          <div className="space-y-4">
+          <motion.div {...getColProps(2)} className="space-y-4">
             <div className="space-y-3">
               <h3 className="font-display text-xs font-semibold uppercase tracking-wider text-foreground">
                 Projects
@@ -125,29 +143,42 @@ export function Footer() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Large Decorative Wordmark (Scalable SVG ensures zero clipping/overflow on all device sizes) */}
+        {/* Large Decorative Wordmark (Masked Slide-Up) */}
         <div className="py-6 sm:py-10 select-none overflow-hidden opacity-10 dark:opacity-15 pointer-events-none flex justify-center items-center w-full px-2">
-          <svg
-            viewBox="0 0 1000 110"
-            className="w-full max-w-5xl h-auto select-none"
-            aria-hidden="true"
+          <motion.div
+            initial={false}
+            animate={
+              isInView ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }
+            }
+            transition={{
+              duration: 0.7,
+              delay: 0.32,
+              ease: MOTION_EASE,
+            }}
+            className="w-full max-w-5xl flex justify-center"
           >
-            <text
-              x="50%"
-              y="55%"
-              dominantBaseline="middle"
-              textAnchor="middle"
-              fill="currentColor"
-              className="font-display font-extrabold tracking-tight text-foreground uppercase"
-              fontSize="80"
-              letterSpacing="-0.02em"
+            <svg
+              viewBox="0 0 1000 110"
+              className="w-full max-w-5xl h-auto select-none"
+              aria-hidden="true"
             >
-              MD ARMAN ALAM
-            </text>
-          </svg>
+              <text
+                x="50%"
+                y="55%"
+                dominantBaseline="middle"
+                textAnchor="middle"
+                fill="currentColor"
+                className="font-display font-extrabold tracking-tight text-foreground uppercase"
+                fontSize="80"
+                letterSpacing="-0.02em"
+              >
+                MD ARMAN ALAM
+              </text>
+            </svg>
+          </motion.div>
         </div>
 
         {/* Bottom bar */}

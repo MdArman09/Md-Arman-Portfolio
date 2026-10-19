@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { ThemeToggle } from "./theme-toggle";
 import { ResumeDropdown } from "@/components/shared/resume-dropdown";
@@ -10,6 +11,7 @@ import { Search, Menu, X, ArrowUpRight } from "lucide-react";
 import { scrollToSection, getNavOffset } from "@/lib/scroll";
 
 export function Header() {
+  const prefersReducedMotion = useReducedMotion();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [activeSection, setActiveSection] = React.useState<string>(() => {
     if (typeof window !== "undefined" && window.location.hash) {
@@ -259,13 +261,25 @@ export function Header() {
                   href={item.href}
                   onClick={(e) => handleNavClick(e, sectionId)}
                   aria-current={isActive ? "location" : undefined}
-                  className={`text-xs font-medium px-3 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                  className={`relative text-xs font-medium px-3 py-1.5 rounded-full transition-colors duration-200 cursor-pointer ${
                     isActive
-                      ? "bg-primary/15 text-primary font-semibold shadow-xs"
+                      ? "text-primary font-semibold"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                   }`}
                 >
-                  {item.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navbar-active-pill"
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : { type: "spring", stiffness: 380, damping: 32 }
+                      }
+                      className="absolute inset-0 rounded-full bg-primary/15 border border-primary/20 shadow-xs"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
                 </Link>
               );
             })}

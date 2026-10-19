@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useActionState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { sendContactMessage, ContactActionResult } from "@/app/actions/contact";
 import { SpotlightCard } from "@/components/21st/spotlight-card";
@@ -17,6 +18,9 @@ import {
   Loader2,
   MessageSquare,
 } from "lucide-react";
+import { SectionHeader } from "@/components/motion/section-header";
+import { SectionDivider } from "@/components/motion/section-divider";
+import { useSafeInView, MOTION_EASE } from "@/lib/motion";
 
 const initialState: ContactActionResult = {
   success: false,
@@ -37,6 +41,18 @@ export function Contact() {
     message: string;
   } | null>(null);
   const formRef = React.useRef<HTMLFormElement>(null);
+  const sectionRef = React.useRef<HTMLElement>(null);
+  const isInView = useSafeInView(sectionRef);
+  const prefersReducedMotion = useReducedMotion();
+
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const displayStatus = clientStatus || state;
   const isBusy = isPending || isSubmitting;
@@ -76,7 +92,7 @@ export function Contact() {
       return;
     }
 
-    // Step 1: Direct Browser Fetch to FormSubmit AJAX (uses real browser origin & visitor IP)
+    // Step 1: Direct Browser Fetch to FormSubmit AJAX
     try {
       const response = await fetch("https://formsubmit.co/ajax/arman.dev09@gmail.com", {
         method: "POST",
@@ -136,37 +152,52 @@ export function Contact() {
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
-      className="py-20 px-4 sm:px-6 lg:px-8 border-t border-border/50 min-h-[calc(100dvh-var(--nav-offset,88px))]"
+      className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-x-clip min-h-[calc(100dvh-var(--nav-offset,88px))]"
     >
+      <SectionDivider className="absolute top-0 inset-x-0" />
+
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Section Header */}
-        <div data-scroll-target className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-primary bg-primary/10 border border-primary/20">
-            <Mail className="w-3.5 h-3.5" />
-            <span>07 // GET IN TOUCH</span>
-          </div>
-          <h2
-            tabIndex={-1}
-            className="font-display font-bold text-3xl sm:text-4xl text-foreground outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
-          >
-            Let&apos;s Connect & Build Together
-          </h2>
-          <p className="text-muted-foreground text-sm max-w-xl">
-            Open to full-time Software Development Engineer roles and engineering conversations. Feel free to send a message or reach out directly.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrowIcon={<Mail className="w-3.5 h-3.5" />}
+          eyebrowText="07 // GET IN TOUCH"
+          title="Let's Connect & Build Together"
+          subtitle="Open to full-time Software Development Engineer roles and engineering conversations. Feel free to send a message or reach out directly."
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Direct Communication Channels */}
-          <div className="lg:col-span-5 space-y-4">
+          {/* Direct Communication Channels (enters from left on desktop, fade-up on mobile) */}
+          <motion.div
+            initial={false}
+            animate={
+              isInView
+                ? { opacity: 1, x: 0, y: 0 }
+                : {
+                    opacity: 0,
+                    x: isMobile || prefersReducedMotion ? 0 : -40,
+                    y: isMobile && !prefersReducedMotion ? 16 : 0,
+                  }
+            }
+            transition={{
+              duration: 0.6,
+              ease: MOTION_EASE,
+            }}
+            className="lg:col-span-5 space-y-4"
+          >
             <SpotlightCard className="p-6 space-y-6 bg-card/80">
               <h3 className="font-display font-bold text-lg text-foreground">
                 Direct Contact Information
               </h3>
 
               {/* Email item */}
-              <div className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-2">
+              <motion.div
+                initial={false}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, delay: 0.2, ease: MOTION_EASE }}
+                className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-2"
+              >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-primary" />
@@ -180,10 +211,15 @@ export function Contact() {
                 >
                   {siteConfig.email}
                 </a>
-              </div>
+              </motion.div>
 
               {/* Phone item */}
-              <div className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-2">
+              <motion.div
+                initial={false}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, delay: 0.26, ease: MOTION_EASE }}
+                className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-2"
+              >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
                     <Phone className="w-3.5 h-3.5 text-emerald-500" />
@@ -197,10 +233,15 @@ export function Contact() {
                 >
                   {siteConfig.phone}
                 </a>
-              </div>
+              </motion.div>
 
               {/* Location item */}
-              <div className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-1">
+              <motion.div
+                initial={false}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, delay: 0.32, ease: MOTION_EASE }}
+                className="p-4 rounded-xl border border-border/70 bg-muted/20 space-y-1"
+              >
                 <span className="text-xs font-mono text-muted-foreground flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-primary" />
                   Location
@@ -208,10 +249,15 @@ export function Contact() {
                 <span className="text-sm font-medium text-foreground block">
                   {siteConfig.location}
                 </span>
-              </div>
+              </motion.div>
 
               {/* Social Channels */}
-              <div className="pt-2 border-t border-border/60 space-y-2">
+              <motion.div
+                initial={false}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, delay: 0.38, ease: MOTION_EASE }}
+                className="pt-2 border-t border-border/60 space-y-2"
+              >
                 <span className="text-xs font-mono text-muted-foreground block">
                   Profiles & Repositories
                 </span>
@@ -220,7 +266,7 @@ export function Contact() {
                     href={siteConfig.links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border/80 bg-background/60 hover:bg-muted text-xs font-semibold text-foreground transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border/80 bg-background/60 hover:bg-muted text-xs font-semibold text-foreground transition-all hover:scale-102"
                   >
                     <LinkedinIcon className="w-4 h-4" />
                     <span>LinkedIn</span>
@@ -229,18 +275,35 @@ export function Contact() {
                     href={siteConfig.links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border/80 bg-background/60 hover:bg-muted text-xs font-semibold text-foreground transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-xl border border-border/80 bg-background/60 hover:bg-muted text-xs font-semibold text-foreground transition-all hover:scale-102"
                   >
                     <GithubIcon className="w-4 h-4" />
                     <span>GitHub</span>
                   </a>
                 </div>
-              </div>
+              </motion.div>
             </SpotlightCard>
-          </div>
+          </motion.div>
 
-          {/* Interactive Contact Form */}
-          <div className="lg:col-span-7">
+          {/* Interactive Contact Form (enters from right on desktop, fade-up on mobile) */}
+          <motion.div
+            initial={false}
+            animate={
+              isInView
+                ? { opacity: 1, x: 0, y: 0 }
+                : {
+                    opacity: 0,
+                    x: isMobile || prefersReducedMotion ? 0 : 40,
+                    y: isMobile && !prefersReducedMotion ? 16 : 0,
+                  }
+            }
+            transition={{
+              duration: 0.6,
+              delay: 0.15,
+              ease: MOTION_EASE,
+            }}
+            className="lg:col-span-7"
+          >
             <SpotlightCard className="p-6 sm:p-8 bg-card">
               <div className="mb-6 space-y-1">
                 <h3 className="font-display font-bold text-lg text-foreground flex items-center gap-2">
@@ -252,24 +315,49 @@ export function Contact() {
                 </p>
               </div>
 
-              {/* Success Notification */}
+              {/* Success Notification with smooth check draw and green flash */}
               {displayStatus?.success && (
-                <div
+                <motion.div
                   role="status"
                   aria-live="polite"
-                  className="mb-6 p-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-3 animate-in fade-in"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="mb-6 p-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-3"
                 >
-                  <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-500" />
+                  <svg
+                    className="w-5 h-5 text-emerald-500 shrink-0"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <motion.path
+                      d="M8 12l3 3 5-5"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 0.45, ease: "easeOut" }}
+                    />
+                  </svg>
                   <span>{displayStatus.message}</span>
-                </div>
+                </motion.div>
               )}
 
-              {/* Error Notification with Direct 1-Click Fallback */}
+              {/* Error Notification with single shake animation */}
               {displayStatus && !displayStatus.success && displayStatus.message && (
-                <div
+                <motion.div
                   role="alert"
                   aria-live="assertive"
-                  className="mb-6 p-4 rounded-xl border border-destructive/40 bg-destructive/10 text-destructive text-xs space-y-3 animate-in fade-in"
+                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: -4 }}
+                  animate={
+                    prefersReducedMotion
+                      ? { opacity: 1 }
+                      : { opacity: 1, x: [-4, 4, -4, 4, 0] }
+                  }
+                  transition={{ duration: 0.3 }}
+                  className="mb-6 p-4 rounded-xl border border-destructive/40 bg-destructive/10 text-destructive text-xs space-y-3"
                 >
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
@@ -304,7 +392,7 @@ export function Contact() {
                       <span>Call Directly</span>
                     </a>
                   </div>
-                </div>
+                </motion.div>
               )}
 
               <form
@@ -325,10 +413,10 @@ export function Contact() {
                   />
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 group">
                   <label
                     htmlFor="name"
-                    className="block text-xs font-mono font-medium text-foreground"
+                    className="block text-xs font-mono font-medium text-foreground group-focus-within:text-primary transition-colors duration-200"
                   >
                     Your Name <span className="text-destructive">*</span>
                   </label>
@@ -338,19 +426,24 @@ export function Contact() {
                     name="name"
                     required
                     placeholder="e.g. Satya Nadella"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all duration-200"
                   />
                   {displayStatus?.errors?.name && (
-                    <p className="text-[11px] text-destructive">
+                    <motion.p
+                      initial={prefersReducedMotion ? {} : { x: -4 }}
+                      animate={prefersReducedMotion ? {} : { x: [-4, 4, -4, 4, 0] }}
+                      transition={{ duration: 0.3 }}
+                      className="text-[11px] text-destructive"
+                    >
                       {displayStatus.errors.name[0]}
-                    </p>
+                    </motion.p>
                   )}
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 group">
                   <label
                     htmlFor="email"
-                    className="block text-xs font-mono font-medium text-foreground"
+                    className="block text-xs font-mono font-medium text-foreground group-focus-within:text-primary transition-colors duration-200"
                   >
                     Your Email <span className="text-destructive">*</span>
                   </label>
@@ -360,19 +453,24 @@ export function Contact() {
                     name="email"
                     required
                     placeholder="e.g. satya@microsoft.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all duration-200"
                   />
                   {displayStatus?.errors?.email && (
-                    <p className="text-[11px] text-destructive">
+                    <motion.p
+                      initial={prefersReducedMotion ? {} : { x: -4 }}
+                      animate={prefersReducedMotion ? {} : { x: [-4, 4, -4, 4, 0] }}
+                      transition={{ duration: 0.3 }}
+                      className="text-[11px] text-destructive"
+                    >
                       {displayStatus.errors.email[0]}
-                    </p>
+                    </motion.p>
                   )}
                 </div>
 
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 group">
                   <label
                     htmlFor="message"
-                    className="block text-xs font-mono font-medium text-foreground"
+                    className="block text-xs font-mono font-medium text-foreground group-focus-within:text-primary transition-colors duration-200"
                   >
                     Message <span className="text-destructive">*</span>
                   </label>
@@ -382,12 +480,17 @@ export function Contact() {
                     required
                     rows={4}
                     placeholder="Discuss an SDE role, project collaboration, or engineering idea..."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all resize-y"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-border/80 bg-background/80 text-foreground placeholder:text-muted-foreground text-sm focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-hidden transition-all duration-200 resize-y"
                   />
                   {displayStatus?.errors?.message && (
-                    <p className="text-[11px] text-destructive">
+                    <motion.p
+                      initial={prefersReducedMotion ? {} : { x: -4 }}
+                      animate={prefersReducedMotion ? {} : { x: [-4, 4, -4, 4, 0] }}
+                      transition={{ duration: 0.3 }}
+                      className="text-[11px] text-destructive"
+                    >
                       {displayStatus.errors.message[0]}
-                    </p>
+                    </motion.p>
                   )}
                 </div>
 
@@ -410,7 +513,7 @@ export function Contact() {
                 </button>
               </form>
             </SpotlightCard>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
